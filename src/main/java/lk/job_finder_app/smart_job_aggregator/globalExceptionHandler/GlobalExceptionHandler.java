@@ -1,6 +1,7 @@
 package lk.job_finder_app.smart_job_aggregator.globalExceptionHandler;
 
 import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.BadRequestException;
+import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.ForbiddenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,4 +42,21 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
+
+    //403
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorMessage> ForbiddenException(
+            ForbiddenException ex,
+            WebRequest webRequest
+    ){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(403);
+        errorMessage.setMessage(ex.getMessage());
+        errorMessage.setDescription(webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    }
+
+
 }
