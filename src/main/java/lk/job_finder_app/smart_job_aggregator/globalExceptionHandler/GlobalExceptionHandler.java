@@ -1,9 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.globalExceptionHandler;
 
-import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.BadRequestException;
-import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.ForbiddenException;
-import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.ResourceNotFoundException;
-import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.UnauthorizedException;
+import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,21 +11,6 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    //500
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessage> InternalServerError(
-            Exception ex,
-            WebRequest webRequest
-    ) {
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setTimestamp(LocalDateTime.now());
-        errorMessage.setStatus(500);
-        errorMessage.setMessage(ex.getMessage());
-        errorMessage.setDescription(webRequest.getDescription(false));
-
-        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
     //400
     @ExceptionHandler(BadRequestException.class)
@@ -43,21 +25,6 @@ public class GlobalExceptionHandler {
         errorMessage.setDescription(webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-    }
-
-    //403
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ErrorMessage> ForbiddenException(
-            ForbiddenException ex,
-            WebRequest webRequest
-    ){
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setTimestamp(LocalDateTime.now());
-        errorMessage.setStatus(403);
-        errorMessage.setMessage(ex.getMessage());
-        errorMessage.setDescription(webRequest.getDescription(false));
-
-        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
     }
 
     //401
@@ -75,6 +42,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 
+    //403
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorMessage> ForbiddenException(
+            ForbiddenException ex,
+            WebRequest webRequest
+    ){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(403);
+        errorMessage.setMessage(ex.getMessage());
+        errorMessage.setDescription(webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    }
+
     //404
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> ResourceNotFoundException(
@@ -90,4 +72,33 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
+    //409
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorMessage> ConflictException(
+            ConflictException ex,
+            WebRequest webRequest
+    ){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(409);
+        errorMessage.setMessage(ex.getMessage());
+        errorMessage.setDescription(webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    //500
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorMessage> InternalServerError(
+            Exception ex,
+            WebRequest webRequest
+    ) {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(500);
+        errorMessage.setMessage(ex.getMessage());
+        errorMessage.setDescription(webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
