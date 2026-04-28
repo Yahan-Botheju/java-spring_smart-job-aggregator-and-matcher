@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.globalExceptionHandler;
 
+import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,5 +25,20 @@ public class GlobalExceptionHandler {
         errorMessage.setDescription(webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    //400
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorMessage> BadRequestException(
+            BadRequestException ex,
+            WebRequest webRequest
+    ){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(400);
+        errorMessage.setMessage(ex.getMessage());
+        errorMessage.setDescription(webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
