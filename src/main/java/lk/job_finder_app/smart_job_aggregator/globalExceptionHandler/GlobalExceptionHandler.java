@@ -2,6 +2,7 @@ package lk.job_finder_app.smart_job_aggregator.globalExceptionHandler;
 
 import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.BadRequestException;
 import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.ForbiddenException;
+import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -56,6 +57,21 @@ public class GlobalExceptionHandler {
         errorMessage.setDescription(webRequest.getDescription(false));
 
         return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    }
+
+    //401
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorMessage> UnauthorizedException(
+            UnauthorizedException ex,
+            WebRequest webRequest
+    ){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(401);
+        errorMessage.setMessage(ex.getMessage());
+        errorMessage.setDescription(webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 
 
