@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.infrastructure.jobPosting.persistence;
+package lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.persistence;
 
-public class JobPostingRepositoryImpl {
+public class JobPostRepositoryImpl {
 }

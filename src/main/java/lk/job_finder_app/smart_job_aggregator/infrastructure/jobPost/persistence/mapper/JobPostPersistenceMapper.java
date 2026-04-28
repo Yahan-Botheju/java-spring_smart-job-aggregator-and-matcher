@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.infrastructure.jobPosting.persistence.mapper;
+package lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.persistence.mapper;
 
 public interface JobPostPersistenceMapper {
 }
