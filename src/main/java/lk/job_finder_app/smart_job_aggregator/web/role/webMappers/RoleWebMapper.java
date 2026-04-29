@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobPost.webMappers;
+package lk.job_finder_app.smart_job_aggregator.web.role.webMappers;
 
-public interface JobPostWebMapper {
+public interface RoleWebMapper {
 }

@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs;
+package lk.job_finder_app.smart_job_aggregator.web.role.DTOs;
 
-public class JobPostResponseDTO {
+public class RoleResponseDTO {
 }

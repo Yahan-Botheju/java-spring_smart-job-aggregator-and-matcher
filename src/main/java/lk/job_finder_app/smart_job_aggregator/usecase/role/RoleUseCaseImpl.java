@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.usecase.jobPost;
+package lk.job_finder_app.smart_job_aggregator.usecase.role;
 
-public class JobPostUseCaseImpl {
+public class RoleUseCaseImpl {
 }
