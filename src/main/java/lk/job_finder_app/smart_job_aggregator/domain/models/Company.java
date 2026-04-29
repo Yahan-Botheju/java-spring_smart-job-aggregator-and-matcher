@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    private Long userId;
-    private String userName;
-    private String userEmail;
+public class Company {
+    private Long companyId;
+    private String companyName;
+    private String companyIndustry;
+    private String companyRating;
 }

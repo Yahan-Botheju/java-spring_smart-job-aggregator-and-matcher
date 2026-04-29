@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.domain.models;
 
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    private Long userId;
-    private String userName;
-    private String userEmail;
+public class Role {
+    private Long roleId;
+    private RoleName roleName;
+    private String limitPerMinute;
 }
