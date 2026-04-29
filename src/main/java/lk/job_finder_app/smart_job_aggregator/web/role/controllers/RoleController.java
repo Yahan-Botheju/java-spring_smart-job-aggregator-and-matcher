@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobPost.controllers;
+package lk.job_finder_app.smart_job_aggregator.web.role.controllers;
 
-public class JobPostController {
+public class RoleController {
 }
