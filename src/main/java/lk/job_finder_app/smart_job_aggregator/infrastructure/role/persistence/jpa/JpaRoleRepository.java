@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.infrastructure.company.persistence.jpa;
+package lk.job_finder_app.smart_job_aggregator.infrastructure.role.persistence.jpa;
 
-public interface JpaCompanyRepository {
+public interface JpaRoleRepository {
 }
