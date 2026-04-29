@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.infrastructure.jobApplication.config;
+package lk.job_finder_app.smart_job_aggregator.infrastructure.company.config;
 
-public class JobApplicationPersistenceBeanConfig {
+public class CompanyPersistenceBeanConfig {
 }
