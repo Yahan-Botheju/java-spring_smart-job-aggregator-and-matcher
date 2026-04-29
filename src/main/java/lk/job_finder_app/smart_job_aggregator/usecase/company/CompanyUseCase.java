@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.usecase.jobApplication;
+package lk.job_finder_app.smart_job_aggregator.usecase.company;
 
-public interface JobApplicationUseCase {
+public interface CompanyUseCase {
 }
