@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobApplication.interceptor;
+package lk.job_finder_app.smart_job_aggregator.web.company.interceptor;
 
-public class JobApplicationInterceptor {
+public class CompanyInterceptor {
 }

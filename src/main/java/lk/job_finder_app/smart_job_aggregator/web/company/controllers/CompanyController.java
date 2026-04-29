@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobApplication.controllers;
+package lk.job_finder_app.smart_job_aggregator.web.company.controllers;
 
-public class JobApplicationController {
+public class CompanyController {
 }

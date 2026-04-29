@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobApplication.DTOs;
+package lk.job_finder_app.smart_job_aggregator.web.company.DTOs;
 
-public class JobApplicationRequestDTO {
+public class CompanyRequestDTO {
 }

@@ -1,4 +1,4 @@
-package lk.job_finder_app.smart_job_aggregator.web.jobApplication.webMappers;
+package lk.job_finder_app.smart_job_aggregator.web.company.webMappers;
 
-public interface JobApplicationWebMapper {
+public interface CompanyWebMapper {
 }
