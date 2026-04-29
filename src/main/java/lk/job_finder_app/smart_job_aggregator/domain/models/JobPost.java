@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.domain.models;
 
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.JobStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class JobPost {
     private Long postId;
-    private String title;
-    private String description;
-    private BigDecimal salary;
+    private String postTitle;
+    private String postDescription;
+    private BigDecimal postSalary;
+    private JobStatus jobStatus;
     private Set<String> skillsRequired;
 }
