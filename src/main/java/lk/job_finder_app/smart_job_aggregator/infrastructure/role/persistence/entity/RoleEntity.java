@@ -1,15 +1,14 @@
-package lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.entity;
+package lk.job_finder_app.smart_job_aggregator.infrastructure.role.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SoftDelete;
-import org.springframework.data.annotation.Id;
+
 
 @Entity
 @Table(name = "roles")
@@ -21,8 +20,11 @@ public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
+
     @NotBlank(message = "Role cannot be empty")
-    private String roleName;
-    @NotBlank(message = "Limit per minuet cannot be empty")
-    private String limitPerMinute;
+    @Enumerated(EnumType.STRING)
+    private RoleName roleName;
+
+    private int limitPerMinute;
+
 }
