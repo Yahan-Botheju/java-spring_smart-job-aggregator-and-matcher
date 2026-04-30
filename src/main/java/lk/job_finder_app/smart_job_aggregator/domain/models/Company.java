@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,5 +13,5 @@ public class Company {
     private Long companyId;
     private String companyName;
     private String companyIndustry;
-    private String companyRating;
+    private BigDecimal companyRating;
 }
