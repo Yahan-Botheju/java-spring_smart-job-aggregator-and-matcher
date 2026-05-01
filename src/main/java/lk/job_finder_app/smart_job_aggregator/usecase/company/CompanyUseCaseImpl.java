@@ -17,4 +17,11 @@ public class CompanyUseCaseImpl implements CompanyUseCase {
     public List<Company> getAllCompanies(){
         return  companyRepository.getAllCompanies();
     }
+
+
+    //create company
+    @Override
+    public Company createCompany(Company company){
+        return companyRepository.createCompany(company);
+    }
 }
