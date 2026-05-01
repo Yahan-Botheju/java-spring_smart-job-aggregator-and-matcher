@@ -3,14 +3,14 @@ package lk.job_finder_app.smart_job_aggregator.web.company.controllers;
 import lk.job_finder_app.smart_job_aggregator.domain.models.Company;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
 import lk.job_finder_app.smart_job_aggregator.usecase.company.CompanyUseCase;
+import lk.job_finder_app.smart_job_aggregator.web.company.DTOs.CompanyRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.company.DTOs.CompanyResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.company.webMappers.CompanyWebMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,6 +39,58 @@ public class CompanyController {
                 responseDTOS
         ));
 
+    }
+
+    //create company
+    @PostMapping("/")
+    public ResponseEntity<StandardResponse<CompanyResponseDTO>> createCompany(
+                               @RequestBody CompanyRequestDTO companyRequestDTO
+    ){
+        //turn dot to domain model
+        Company company = companyWebMapper.toDomainModel(companyRequestDTO);
+
+        //set to usecase
+        Company savedEntity = companyUseCase.createCompany(company);
+
+        CompanyResponseDTO responseDTO = companyWebMapper.toResponseDTO(savedEntity);
+
+        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/company/" + responseDTO.getCompanyId()))
+                .body(new StandardResponse<>(
+                        201,
+                        "Company registered successfully",
+                        LocalDateTime.now(),
+                        responseDTO
+                ));
+    }
+
+    //update company
+    @PutMapping("/{companyId}")
+    public ResponseEntity<StandardResponse<CompanyResponseDTO>> updateCompany(
+            @PathVariable Long companyId,
+            @RequestBody CompanyRequestDTO companyRequestDTO
+    ){
+        //create domain model
+        Company toDomainModel = companyWebMapper.toDomainModel(companyRequestDTO);
+
+        //set created domain model and id to usecase
+        Company updatedCompany = companyUseCase.updateCompany(companyId, toDomainModel);
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Details updated successfully",
+                LocalDateTime.now(),
+                companyWebMapper.toResponseDTO(updatedCompany)
+        ));
+
+    }
+
+    //delete company
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity<String> deleteCompany(
+            @PathVariable Long companyId
+    ){
+        companyUseCase.deleteCompany(companyId);
+        return  ResponseEntity.noContent().build();
     }
 
 }
