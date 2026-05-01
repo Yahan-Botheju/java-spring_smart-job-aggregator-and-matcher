@@ -63,4 +63,14 @@ public class CompanyRepositoryImpl implements CompanyRepository {
 
         return companyPersistenceMapper.toDomainModel(updatedCompanyEntity);
     }
+
+    //delete company
+    @Override
+    public void deleteCompany(Long companyId){
+        //check availability of company
+        jpaCompanyRepository.findById(companyId)
+                .orElseThrow(()-> new ResourceNotFoundException("Company Not Found"));
+        //then delete
+        jpaCompanyRepository.deleteById(companyId);
+    }
 }
