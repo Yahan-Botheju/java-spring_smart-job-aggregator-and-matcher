@@ -31,8 +31,17 @@ public class CompanyUseCaseImpl implements CompanyUseCase {
     public Company updateCompany(Long companyId, Company company){
         //check company availability by custom method
         companyRepository.getCompanyById(companyId)
-                .orElseThrow(() -> new ResourceNotFoundException("Company not found" + companyId));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found" + " " +companyId));
         //set values to domain repo
         return companyRepository.updateCompany(companyId, company);
+    }
+
+    //delete company
+    public void deleteCompany(Long companyId){
+        //check availability of company
+        companyRepository.getCompanyById(companyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found" + " " + companyId));
+        //then delete
+        companyRepository.deleteCompany(companyId);
     }
 }
