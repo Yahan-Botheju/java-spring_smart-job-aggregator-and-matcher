@@ -11,4 +11,7 @@ public interface CompanyUseCase {
 
     //create company
     Company createCompany(Company company);
+
+    //update company
+    Company updateCompany(Long companyId, Company company);
 }
