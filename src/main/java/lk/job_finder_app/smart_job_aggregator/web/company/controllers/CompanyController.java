@@ -84,4 +84,13 @@ public class CompanyController {
 
     }
 
+    //delete company
+    @DeleteMapping("/{companyId}")
+    public ResponseEntity<String> deleteCompany(
+            @PathVariable Long companyId
+    ){
+        companyUseCase.deleteCompany(companyId);
+        return  ResponseEntity.noContent().build();
+    }
+
 }
