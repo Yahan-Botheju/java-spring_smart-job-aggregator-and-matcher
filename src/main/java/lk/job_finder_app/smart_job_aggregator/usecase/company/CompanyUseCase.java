@@ -8,4 +8,7 @@ public interface CompanyUseCase {
 
     //get all companies
     List<Company> getAllCompanies();
+
+    //create company
+    Company createCompany(Company company);
 }

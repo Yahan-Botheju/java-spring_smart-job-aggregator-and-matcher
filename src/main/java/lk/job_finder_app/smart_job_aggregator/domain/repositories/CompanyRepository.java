@@ -13,4 +13,6 @@ public interface CompanyRepository {
     //get all companies
     List<Company> getAllCompanies();
 
+    //create company
+    Company createCompany(Company company);
 }
