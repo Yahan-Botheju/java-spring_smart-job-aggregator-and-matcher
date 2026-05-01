@@ -13,6 +13,12 @@ pipeline {
                 bat 'gradlew.bat clean build -x test'
             }
         }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            }
+        }
     }
 
     post {
