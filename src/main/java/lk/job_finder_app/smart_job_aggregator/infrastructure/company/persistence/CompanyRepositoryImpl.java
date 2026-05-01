@@ -6,6 +6,7 @@ import lk.job_finder_app.smart_job_aggregator.infrastructure.company.persistence
 import lk.job_finder_app.smart_job_aggregator.infrastructure.company.persistence.jpa.JpaCompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.company.persistence.mapper.CompanyPersistenceMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,5 +46,21 @@ public class CompanyRepositoryImpl implements CompanyRepository {
         CompanyEntity savedEntity = jpaCompanyRepository.save(companyEntity);
         //turn to domain model and return
         return companyPersistenceMapper.toDomainModel(savedEntity);
+    }
+
+    //update company
+    @Override
+    public Company updateCompany(Long companyId, Company company){
+        //check company availability in db
+        CompanyEntity companyEntity = jpaCompanyRepository.findById(companyId)
+                .orElseThrow(()-> new ResourceNotFoundException("Company Not Found"));
+
+        //update existing entity
+        CompanyEntity updatedCompanyEntity = companyPersistenceMapper.updateEntityWithNewData(company,companyEntity);
+
+        //save in db
+        jpaCompanyRepository.save(updatedCompanyEntity);
+
+        return companyPersistenceMapper.toDomainModel(updatedCompanyEntity);
     }
 }
