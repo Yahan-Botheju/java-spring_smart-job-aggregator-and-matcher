@@ -8,6 +8,7 @@ import lk.job_finder_app.smart_job_aggregator.infrastructure.company.persistence
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class CompanyRepositoryImpl implements CompanyRepository {
@@ -17,6 +18,14 @@ public class CompanyRepositoryImpl implements CompanyRepository {
 
     //inject persistence mapper
     private final CompanyPersistenceMapper companyPersistenceMapper;
+
+    //check company by ID
+    @Override
+    public Optional<Company> getCompanyById(long companyId) {
+        return jpaCompanyRepository.findById(companyId)
+                .map(companyPersistenceMapper::toDomainModel);
+
+    }
 
     //get all companies
     @Override
