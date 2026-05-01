@@ -52,13 +52,36 @@ public class CompanyController {
         //set to usecase
         Company savedEntity = companyUseCase.createCompany(company);
 
-        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/company/"))
+        CompanyResponseDTO responseDTO = companyWebMapper.toResponseDTO(savedEntity);
+
+        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/company/" + responseDTO.getCompanyId()))
                 .body(new StandardResponse<>(
                         201,
                         "Company registered successfully",
                         LocalDateTime.now(),
-                        companyWebMapper.toResponseDTO(savedEntity)
+                        responseDTO
                 ));
+    }
+
+    //update company
+    @PutMapping("/{companyId}")
+    public ResponseEntity<StandardResponse<CompanyResponseDTO>> updateCompany(
+            @PathVariable Long companyId,
+            @RequestBody CompanyRequestDTO companyRequestDTO
+    ){
+        //create domain model
+        Company toDomainModel = companyWebMapper.toDomainModel(companyRequestDTO);
+
+        //set created domain model and id to usecase
+        Company updatedCompany = companyUseCase.updateCompany(companyId, toDomainModel);
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Details updated successfully",
+                LocalDateTime.now(),
+                companyWebMapper.toResponseDTO(updatedCompany)
+        ));
+
     }
 
 }
