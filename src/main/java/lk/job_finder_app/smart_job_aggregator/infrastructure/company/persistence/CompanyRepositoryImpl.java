@@ -35,4 +35,15 @@ public class CompanyRepositoryImpl implements CompanyRepository {
         //turn entity to domain model and return
         return companyEntities.stream().map(companyPersistenceMapper::toDomainModel).toList();
     }
+
+    //create company
+    @Override
+    public Company createCompany(Company company){
+        //domain model to entity
+        CompanyEntity companyEntity = companyPersistenceMapper.toEntity(company);
+        //save in db
+        CompanyEntity savedEntity = jpaCompanyRepository.save(companyEntity);
+        //turn to domain model and return
+        return companyPersistenceMapper.toDomainModel(savedEntity);
+    }
 }
