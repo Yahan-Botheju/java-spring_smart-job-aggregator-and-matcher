@@ -30,9 +30,9 @@ public class JobPostController {
     @GetMapping("/")
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getAllJobPosts() {
         //get all job posts as domain model list
-        List<JobPost> jobPosts = jobPostUseCase.getAllJobPosts();
+        List<JobPostWithCompany> jobPosts = jobPostUseCase.getAllJobPosts();
 
-        List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::toResponseDTO).toList();
+        List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::customerResponseDTO).toList();
 
         return ResponseEntity.ok(new StandardResponse<>(
                 200,

@@ -37,8 +37,12 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
     //get all job posts
     @Override
-    public List<JobPost> getAllJobPosts(){
-        return  jobPostRepository.getAllJobPosts();
+    public List<JobPostWithCompany> getAllJobPosts(){
+
+        return  jobPostRepository.getAllJobPosts().stream().map(jobPost -> {
+            Company company = getCompanyDetailsById(jobPost.getCompanyId());
+            return new JobPostWithCompany(jobPost,company);
+        }).toList();
     }
 
     //create job post
