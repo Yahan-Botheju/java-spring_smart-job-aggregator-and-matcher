@@ -20,4 +20,11 @@ public class JobPost {
     private Set<String> skillsRequired;
 
     private Long companyId;
+
+    //create default job status setup for new job post
+    public void setDefaultJobStatus(){
+        if (this.jobStatus == null){
+            this.setJobStatus(JobStatus.ACTIVE);
+        }
+    }
 }
