@@ -17,4 +17,9 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
     public List<JobPost> getAllJobPosts(){
         return  jobPostRepository.getAllJobPosts();
     }
+
+    //create job post
+    public JobPost createJobPost(JobPost jobPost){
+        return jobPostRepository.createJobPost(jobPost);
+    }
 }
