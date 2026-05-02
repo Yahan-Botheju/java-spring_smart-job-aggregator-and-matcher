@@ -3,14 +3,14 @@ package lk.job_finder_app.smart_job_aggregator.web.jobPost.controllers;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
+import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.webMappers.JobPostWebMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,6 +39,23 @@ public class JobPostController {
                 LocalDateTime.now(),
                 responseDTO
         ));
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<StandardResponse<JobPostResponseDTO>> createJobPost(
+            @RequestBody JobPostRequestDTO jobPostRequestDTO
+            ){
+        //turn to domain model and set to usecase
+        JobPost jobPostDomainModel = jobPostUseCase.createJobPost(jobPostWebMapper.toDomainModel(jobPostRequestDTO));
+
+        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/jobpost/"))
+                .body(new StandardResponse<>(
+                        201,
+                        "Job Post created successfully",
+                        LocalDateTime.now(),
+                        jobPostWebMapper.toResponseDTO(jobPostDomainModel)
+                ));
+
     }
 
 }
