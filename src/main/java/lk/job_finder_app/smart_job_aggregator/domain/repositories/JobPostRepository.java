@@ -13,5 +13,6 @@ public interface JobPostRepository {
     //get all posts
     List<JobPost> getAllJobPosts();
 
-
+    //create job post
+    JobPost createJobPost(JobPost jobPost);
 }

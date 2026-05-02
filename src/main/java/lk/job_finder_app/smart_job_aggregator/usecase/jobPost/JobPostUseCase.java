@@ -7,4 +7,7 @@ import java.util.List;
 public interface JobPostUseCase {
     //get all job posts
     List<JobPost> getAllJobPosts();
+
+    //create job post
+    JobPost createJobPost(JobPost jobPost);
 }
