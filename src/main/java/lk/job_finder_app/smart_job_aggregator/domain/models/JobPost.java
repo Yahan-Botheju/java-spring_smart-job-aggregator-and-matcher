@@ -18,4 +18,6 @@ public class JobPost {
     private BigDecimal postSalary;
     private JobStatus jobStatus;
     private Set<String> skillsRequired;
+
+    private Long companyId;
 }

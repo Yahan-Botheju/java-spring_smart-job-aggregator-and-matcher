@@ -22,4 +22,7 @@ public class JobPostRequestDTO {
     private BigDecimal postSalary;
     @NotEmpty(message = "at least one skill is required")
     private Set<String> skillsRequired;
+
+    @NotNull(message = "Company ID is required")
+    private Long companyId;
 }
