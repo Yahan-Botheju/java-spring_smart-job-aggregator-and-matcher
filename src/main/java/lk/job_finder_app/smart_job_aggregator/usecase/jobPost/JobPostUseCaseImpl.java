@@ -1,6 +1,7 @@
 package lk.job_finder_app.smart_job_aggregator.usecase.jobPost;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
+import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -11,6 +12,9 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
     //inject job post repo
     private final JobPostRepository jobPostRepository;
+
+    //inject company repo
+    private final CompanyRepository companyRepository;
 
     //get all job posts
     @Override
