@@ -35,8 +35,12 @@ public class JobPostRepositoryImpl implements JobPostRepository {
     //create job post
     @Override
     public JobPost createJobPost(JobPost jobPost){
+        //call default value set method in domain model
+        jobPost.setDefaultJobStatus();
+
         //set to entity
         JobPostEntity jobPostEntity = jobPostPersistenceMapper.toEntity(jobPost);
+        
         //save in db and take save values
         JobPostEntity savedJobPostEntity = jpaJobPostRepository.save(jobPostEntity);
         //turn to domain model and return
