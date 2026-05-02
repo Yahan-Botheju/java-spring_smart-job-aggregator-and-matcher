@@ -21,4 +21,5 @@ public class JobPostResponseDTO {
     private Set<String> skillsRequired;
 
     private Long companyId;
+    private String companyName;
 }
