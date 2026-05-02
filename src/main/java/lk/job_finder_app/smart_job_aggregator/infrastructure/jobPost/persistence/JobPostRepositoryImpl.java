@@ -24,7 +24,6 @@ public class JobPostRepositoryImpl implements JobPostRepository {
         return jpaJobPostRepository.findById(postId).map(jobPostPersistenceMapper::toDomainModel);
     }
 
-
     //get all job posts
     @Override
     public List<JobPost> getAllJobPosts(){
@@ -33,5 +32,14 @@ public class JobPostRepositoryImpl implements JobPostRepository {
         return jobPosts.stream().map(jobPostPersistenceMapper::toDomainModel).toList();
     }
 
-
+    //create job post
+    @Override
+    public JobPost createJobPost(JobPost jobPost){
+        //set to entity
+        JobPostEntity jobPostEntity = jobPostPersistenceMapper.toEntity(jobPost);
+        //save in db and take save values
+        JobPostEntity savedJobPostEntity = jpaJobPostRepository.save(jobPostEntity);
+        //turn to domain model and return
+        return jobPostPersistenceMapper.toDomainModel(savedJobPostEntity);
+    }
 }
