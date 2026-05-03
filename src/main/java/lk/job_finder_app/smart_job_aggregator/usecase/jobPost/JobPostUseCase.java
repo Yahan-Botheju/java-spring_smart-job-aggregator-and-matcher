@@ -14,4 +14,7 @@ public interface JobPostUseCase {
 
     //update job post
     JobPostWithCompany updateJobPost(Long postId, JobPost jobPost);
+
+    //delete job post
+    void deleteJobPost(Long postId);
 }
