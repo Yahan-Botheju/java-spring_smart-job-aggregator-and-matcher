@@ -78,4 +78,12 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
        return new JobPostWithCompany(savedJobPost, company);
     }
+
+    @Override
+    public void deleteJobPost(Long postId){
+        jobPostRepository.getJobPostById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job Post Not Found" + ", " +  postId));
+
+        jobPostRepository.deleteJobPost(postId);
+    }
 }
