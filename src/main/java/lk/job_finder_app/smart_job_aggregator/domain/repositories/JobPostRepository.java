@@ -8,11 +8,15 @@ import java.util.Optional;
 public interface JobPostRepository {
 
     //job post find by id (CUSTOM METHOD)
-    Optional<JobPost> getJobPostById(long id);
+    Optional<JobPost> getJobPostById(Long id);
 
     //get all posts
     List<JobPost> getAllJobPosts();
 
     //create job post
     JobPost createJobPost(JobPost jobPost);
+
+    //update job post
+    JobPost updateJobPost(Long postId, JobPost jobPost);
+
 }
