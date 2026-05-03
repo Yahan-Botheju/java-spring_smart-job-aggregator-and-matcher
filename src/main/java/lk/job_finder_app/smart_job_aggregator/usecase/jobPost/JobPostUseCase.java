@@ -11,4 +11,7 @@ public interface JobPostUseCase {
 
     //create job post
     JobPostWithCompany createJobPost(JobPost jobPost);
+
+    //update job post
+    JobPostWithCompany updateJobPost(Long postId, JobPost jobPost);
 }
