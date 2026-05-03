@@ -46,6 +46,7 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
     }
 
     //create job post
+    @Override
     public JobPostWithCompany createJobPost(JobPost jobPost){
         //check company availability
         jobPostRepository.getJobPostById(jobPost.getCompanyId())
@@ -59,5 +60,22 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
         //return both results for response
         return new JobPostWithCompany(savedJobPost, company);
 
+    }
+
+    //update job post
+    @Override
+    public JobPostWithCompany updateJobPost(
+            Long postId,
+            JobPost jobPost
+    ){
+       jobPostRepository.getJobPostById(postId)
+               .orElseThrow(() -> new ResourceNotFoundException("Job Post Not Found" + ", " +  postId));
+
+       jobPost.setDefaultJobStatus();
+       //set update domain model to repo for db
+       JobPost savedJobPost = jobPostRepository.updateJobPost(postId, jobPost);
+       Company company = getCompanyDetailsById(savedJobPost.getCompanyId());
+
+       return new JobPostWithCompany(savedJobPost, company);
     }
 }
