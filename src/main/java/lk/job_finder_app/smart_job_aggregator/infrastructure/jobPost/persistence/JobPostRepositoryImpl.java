@@ -64,4 +64,13 @@ public class JobPostRepositoryImpl implements JobPostRepository {
         //saved data turn into domain model
         return jobPostPersistenceMapper.toDomainModel(savedJobPostEntity);
     }
+
+    //delete job post
+    @Override
+    public void deleteJobPost(Long postId){
+        JobPostEntity postEntity =  jpaJobPostRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job Post with id " + postId + " not found"));
+
+        jpaJobPostRepository.deleteById(postId);
+    }
 }
