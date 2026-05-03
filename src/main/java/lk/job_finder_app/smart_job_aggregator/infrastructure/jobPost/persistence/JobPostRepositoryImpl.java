@@ -6,6 +6,7 @@ import lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.persistence
 import lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.persistence.jpa.JpaJobPostRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.persistence.mapper.JobPostPersistenceMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class JobPostRepositoryImpl implements JobPostRepository {
     private final JobPostPersistenceMapper jobPostPersistenceMapper;
 
     //job post find by id (CUSTOM METHOD)
-    public Optional<JobPost> getJobPostById(long postId){
+    public Optional<JobPost> getJobPostById(Long postId){
         return jpaJobPostRepository.findById(postId).map(jobPostPersistenceMapper::toDomainModel);
     }
 
@@ -44,6 +45,23 @@ public class JobPostRepositoryImpl implements JobPostRepository {
         //save in db and take save values
         JobPostEntity savedJobPostEntity = jpaJobPostRepository.save(jobPostEntity);
         //turn to domain model and return
+        return jobPostPersistenceMapper.toDomainModel(savedJobPostEntity);
+    }
+
+    //update job post
+    @Override
+    public JobPost updateJobPost(
+            Long postId,
+            JobPost jobPost
+    ){
+        //check availability
+        JobPostEntity jobPostEntity = jpaJobPostRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job Post with id " + postId + " not found"));
+        //update existing entity new domain model
+        JobPostEntity updatedEntity = jobPostPersistenceMapper.updateEntityWithNewData(jobPost, jobPostEntity);
+        //save in db
+        JobPostEntity savedJobPostEntity =  jpaJobPostRepository.save(updatedEntity);
+        //saved data turn into domain model
         return jobPostPersistenceMapper.toDomainModel(savedJobPostEntity);
     }
 }
