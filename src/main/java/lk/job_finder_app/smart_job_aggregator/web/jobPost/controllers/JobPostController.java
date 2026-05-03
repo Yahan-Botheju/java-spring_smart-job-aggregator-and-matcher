@@ -64,4 +64,33 @@ public class JobPostController {
 
     }
 
+    //update job post
+    @PutMapping("/{postId}")
+    public ResponseEntity<StandardResponse<JobPostResponseDTO>> updateJobPost(
+            @PathVariable Long postId,
+            @RequestBody JobPostRequestDTO jobPostRequestDTO
+    ){
+        JobPost toDomainModel = jobPostWebMapper.toDomainModel(jobPostRequestDTO);
+
+        JobPostWithCompany toUseCase = jobPostUseCase.updateJobPost(postId, toDomainModel);
+
+        JobPostResponseDTO responseDTO = jobPostWebMapper.customerResponseDTO(toUseCase);
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Job Post updated successfully" + "," + responseDTO.getPostId(),
+                LocalDateTime.now(),
+                responseDTO
+        ));
+    }
+
+    //delete job post
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> deleteJobPost(
+            @PathVariable Long postId
+    ){
+        jobPostUseCase.deleteJobPost(postId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
