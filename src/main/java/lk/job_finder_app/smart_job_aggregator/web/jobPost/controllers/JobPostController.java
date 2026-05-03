@@ -65,7 +65,7 @@ public class JobPostController {
     }
 
     //update job post
-    @PostMapping("/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<StandardResponse<JobPostResponseDTO>> updateJobPost(
             @PathVariable Long postId,
             @RequestBody JobPostRequestDTO jobPostRequestDTO
