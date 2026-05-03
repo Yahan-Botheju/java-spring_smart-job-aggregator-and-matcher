@@ -19,4 +19,7 @@ public interface JobPostRepository {
     //update job post
     JobPost updateJobPost(Long postId, JobPost jobPost);
 
+    //delete job post
+    void deleteJobPost(Long id);
+
 }
