@@ -84,4 +84,13 @@ public class JobPostController {
         ));
     }
 
+    //delete job post
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> deleteJobPost(
+            @PathVariable Long postId
+    ){
+        jobPostUseCase.deleteJobPost(postId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
