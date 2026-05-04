@@ -33,4 +33,41 @@ public class UserRepositoryImpl implements UserRepository {
         List<UserEntity>  userEntities = jpaUserRepository.findAll();
         return userEntities.stream().map(userPersistenceMapper::toDomainModel).toList();
     }
+
+    //create user
+    @Override
+    public User createUser(User user){
+        //domain model to entity
+        UserEntity userEntity = userPersistenceMapper.toEntity(user);
+
+        UserEntity savedUserEntity = jpaUserRepository.save(userEntity);
+        //turn entity do domain model return for response
+        return userPersistenceMapper.toDomainModel(savedUserEntity);
+    }
+
+    //update user
+    @Override
+    public User updateUser(
+            Long userId,
+            User user
+    ){
+        //check user availability
+        UserEntity currentUser = jpaUserRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found" + " , " +  userId));
+
+        //update user and save in db
+        UserEntity updatedUserEntity = jpaUserRepository.save(userPersistenceMapper.updateEntity(user, currentUser));
+
+        //return as response
+        return userPersistenceMapper.toDomainModel(updatedUserEntity);
+    }
+
+    //delete user
+    @Override
+    public void deleteUser(Long userId){
+       jpaUserRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found" + " , " +  userId));
+
+        jpaUserRepository.deleteById(userId);
+    }
 }

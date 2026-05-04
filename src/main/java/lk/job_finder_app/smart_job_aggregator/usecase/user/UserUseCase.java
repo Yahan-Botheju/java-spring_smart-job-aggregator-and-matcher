@@ -8,4 +8,13 @@ public interface UserUseCase {
 
     //get all users
     List<User> getAllUsers();
+
+    //create user
+    User createUser(User user);
+
+    //update user
+    User updateUser(Long userId, User user);
+
+    //delete user
+    void deleteUser(Long userId);
 }
