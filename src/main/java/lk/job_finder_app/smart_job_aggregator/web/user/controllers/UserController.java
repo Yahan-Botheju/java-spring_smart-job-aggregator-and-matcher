@@ -42,7 +42,7 @@ public class UserController {
         );
 
     }
-
+    //create user
     @PostMapping("/")
     public ResponseEntity<StandardResponse<UserResponseDTO>> createUser(
             @RequestBody UserRequestDTO userRequestDTO
@@ -66,7 +66,7 @@ public class UserController {
         );
 
     }
-
+    //update user
     @PutMapping("/{userId}")
     public ResponseEntity<StandardResponse<UserResponseDTO>> updateUser(
             @PathVariable Long userId,
@@ -85,5 +85,13 @@ public class UserController {
                 )
         );
 
+    }
+    //delete user
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUser(
+            @PathVariable Long userId
+    ){
+        userUseCase.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }
