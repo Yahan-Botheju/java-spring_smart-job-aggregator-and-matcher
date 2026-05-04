@@ -12,4 +12,7 @@ public interface UserRepository {
 
     //get all users
     List<User> getAllUsers();
+
+    //create user
+    User createUser(User user);
 }
