@@ -61,4 +61,13 @@ public class UserRepositoryImpl implements UserRepository {
         //return as response
         return userPersistenceMapper.toDomainModel(updatedUserEntity);
     }
+
+    //delete user
+    @Override
+    public void deleteUser(Long userId){
+       jpaUserRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found" + " , " +  userId));
+
+        jpaUserRepository.deleteById(userId);
+    }
 }
