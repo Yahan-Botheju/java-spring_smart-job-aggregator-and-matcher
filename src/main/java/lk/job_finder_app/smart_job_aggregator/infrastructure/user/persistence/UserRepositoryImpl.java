@@ -33,4 +33,15 @@ public class UserRepositoryImpl implements UserRepository {
         List<UserEntity>  userEntities = jpaUserRepository.findAll();
         return userEntities.stream().map(userPersistenceMapper::toDomainModel).toList();
     }
+
+    //create user
+    @Override
+    public User createUser(User user){
+        //domain model to entity
+        UserEntity userEntity = userPersistenceMapper.toEntity(user);
+
+        UserEntity savedUserEntity = jpaUserRepository.save(userEntity);
+        //turn entity do domain model return for response
+        return userPersistenceMapper.toDomainModel(savedUserEntity);
+    }
 }
