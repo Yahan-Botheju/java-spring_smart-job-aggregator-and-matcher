@@ -66,4 +66,24 @@ public class UserController {
         );
 
     }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<StandardResponse<UserResponseDTO>> updateUser(
+            @PathVariable Long userId,
+            @RequestBody UserRequestDTO userRequestDTO
+    ){
+        User toDomainModel = userWebMapper.toDomainModel(userRequestDTO);
+        User responseModel = userUseCase.updateUser(userId, toDomainModel);
+        UserResponseDTO toResponseDTO = userWebMapper.toResponseDTO(responseModel);
+
+        return  ResponseEntity.ok(
+                new StandardResponse<>(
+                        200,
+                        "user updated successfully",
+                        LocalDateTime.now(),
+                        toResponseDTO
+                )
+        );
+
+    }
 }
