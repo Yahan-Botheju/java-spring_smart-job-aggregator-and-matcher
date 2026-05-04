@@ -17,4 +17,10 @@ public class UserUseCaseImpl implements UserUseCase{
     public List<User> getAllUsers(){
         return userRepository.getAllUsers();
     }
+
+    //create user
+    @Override
+    public User createUser(User user){
+        return userRepository.createUser(user);
+    }
 }
