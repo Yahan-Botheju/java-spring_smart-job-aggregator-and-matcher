@@ -11,4 +11,7 @@ public interface UserUseCase {
 
     //create user
     User createUser(User user);
+
+    //update user
+    User updateUser(Long userId, User user);
 }
