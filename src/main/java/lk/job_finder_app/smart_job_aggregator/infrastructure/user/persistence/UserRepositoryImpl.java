@@ -44,4 +44,21 @@ public class UserRepositoryImpl implements UserRepository {
         //turn entity do domain model return for response
         return userPersistenceMapper.toDomainModel(savedUserEntity);
     }
+
+    //update user
+    @Override
+    public User updateUser(
+            Long userId,
+            User user
+    ){
+        //check user availability
+        UserEntity currentUser = jpaUserRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found" + " , " +  userId));
+
+        //update user and save in db
+        UserEntity updatedUserEntity = jpaUserRepository.save(userPersistenceMapper.updateEntity(user, currentUser));
+
+        //return as response
+        return userPersistenceMapper.toDomainModel(updatedUserEntity);
+    }
 }
