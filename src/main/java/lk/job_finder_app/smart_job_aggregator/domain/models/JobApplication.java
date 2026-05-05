@@ -19,4 +19,5 @@ public class JobApplication {
 
     private Long userId;
     private Long jobPostId;
+    private Long companyId;
 }
