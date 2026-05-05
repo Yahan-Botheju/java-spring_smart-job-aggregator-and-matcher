@@ -2,7 +2,7 @@ package lk.job_finder_app.smart_job_aggregator.usecase.jobPost;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.Company;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
-import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompany;
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,17 +37,17 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
     //get all job posts
     @Override
-    public List<JobPostWithCompany> getAllJobPosts(){
+    public List<JobPostWithCompanyAggregate> getAllJobPosts(){
 
         return  jobPostRepository.getAllJobPosts().stream().map(jobPost -> {
             Company company = getCompanyDetailsById(jobPost.getCompanyId());
-            return new JobPostWithCompany(jobPost,company);
+            return new JobPostWithCompanyAggregate(jobPost,company);
         }).toList();
     }
 
     //create job post
     @Override
-    public JobPostWithCompany createJobPost(JobPost jobPost){
+    public JobPostWithCompanyAggregate createJobPost(JobPost jobPost){
         //check company availability
         jobPostRepository.getJobPostById(jobPost.getCompanyId())
                 .orElseThrow(() -> new ResourceNotFoundException("Company Not Found"));
@@ -58,13 +58,13 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
         //match job post with related company
         Company company = getCompanyDetailsById(savedJobPost.getCompanyId());
         //return both results for response
-        return new JobPostWithCompany(savedJobPost, company);
+        return new JobPostWithCompanyAggregate(savedJobPost, company);
 
     }
 
     //update job post
     @Override
-    public JobPostWithCompany updateJobPost(
+    public JobPostWithCompanyAggregate updateJobPost(
             Long postId,
             JobPost jobPost
     ){
@@ -76,9 +76,10 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
        JobPost savedJobPost = jobPostRepository.updateJobPost(postId, jobPost);
        Company company = getCompanyDetailsById(savedJobPost.getCompanyId());
 
-       return new JobPostWithCompany(savedJobPost, company);
+       return new JobPostWithCompanyAggregate(savedJobPost, company);
     }
 
+    //delete job post
     @Override
     public void deleteJobPost(Long postId){
         jobPostRepository.getJobPostById(postId)
