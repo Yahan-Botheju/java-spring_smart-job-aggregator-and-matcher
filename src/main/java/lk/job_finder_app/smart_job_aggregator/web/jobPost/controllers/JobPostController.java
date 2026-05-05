@@ -1,7 +1,7 @@
 package lk.job_finder_app.smart_job_aggregator.web.jobPost.controllers;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
-import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompany;
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostRequestDTO;
@@ -30,7 +30,7 @@ public class JobPostController {
     @GetMapping("/")
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getAllJobPosts() {
         //get all job posts as domain model list
-        List<JobPostWithCompany> jobPosts = jobPostUseCase.getAllJobPosts();
+        List<JobPostWithCompanyAggregate> jobPosts = jobPostUseCase.getAllJobPosts();
 
         List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::customerResponseDTO).toList();
 
@@ -50,7 +50,7 @@ public class JobPostController {
         //turn requestDTO to domain model
         JobPost toDomainModel = jobPostWebMapper.toDomainModel(jobPostRequestDTO);
         //set values to usecase (custom job post and company method)
-        JobPostWithCompany savedJobPost = jobPostUseCase.createJobPost(toDomainModel);
+        JobPostWithCompanyAggregate savedJobPost = jobPostUseCase.createJobPost(toDomainModel);
         //get response with company name id using custom mapper
         JobPostResponseDTO responseDTO = jobPostWebMapper.customerResponseDTO(savedJobPost);
 
@@ -72,7 +72,7 @@ public class JobPostController {
     ){
         JobPost toDomainModel = jobPostWebMapper.toDomainModel(jobPostRequestDTO);
 
-        JobPostWithCompany toUseCase = jobPostUseCase.updateJobPost(postId, toDomainModel);
+        JobPostWithCompanyAggregate toUseCase = jobPostUseCase.updateJobPost(postId, toDomainModel);
 
         JobPostResponseDTO responseDTO = jobPostWebMapper.customerResponseDTO(toUseCase);
 

@@ -1,7 +1,7 @@
 package lk.job_finder_app.smart_job_aggregator.web.jobPost.webMappers;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
-import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompany;
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostResponseDTO;
 import org.mapstruct.Mapper;
@@ -16,12 +16,12 @@ public interface JobPostWebMapper {
     JobPost toDomainModel(JobPostRequestDTO jobPostRequestDTO);
 
     //create custom responseDTO for showing customer id and name
-    default JobPostResponseDTO customerResponseDTO(JobPostWithCompany jobPostWithCompany) {
+    default JobPostResponseDTO customerResponseDTO(JobPostWithCompanyAggregate jobPostWithCompanyAggregate) {
 
-        JobPostResponseDTO responseDTO = toResponseDTO(jobPostWithCompany.getJobPost());
+        JobPostResponseDTO responseDTO = toResponseDTO(jobPostWithCompanyAggregate.getJobPost());
 
-        responseDTO.setCompanyId(jobPostWithCompany.getCompany().getCompanyId());
-        responseDTO.setCompanyName(jobPostWithCompany.getCompany().getCompanyName());
+        responseDTO.setCompanyId(jobPostWithCompanyAggregate.getCompany().getCompanyId());
+        responseDTO.setCompanyName(jobPostWithCompanyAggregate.getCompany().getCompanyName());
 
         return responseDTO;
     }

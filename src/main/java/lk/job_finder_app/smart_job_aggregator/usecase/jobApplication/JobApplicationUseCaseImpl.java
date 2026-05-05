@@ -1,14 +1,14 @@
 package lk.job_finder_app.smart_job_aggregator.usecase.jobApplication;
 
-import lk.job_finder_app.smart_job_aggregator.domain.models.Company;
-import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
-import lk.job_finder_app.smart_job_aggregator.domain.models.User;
+import lk.job_finder_app.smart_job_aggregator.domain.models.*;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobApplicationRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
 import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
@@ -41,5 +41,18 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
     }
 
     /* ----- PUBLIC METHODS ----- */
+
+    //get all job applications
+    @Override
+    public List<JobApplicationAggregate> getAllJobApplications(){
+        return jobApplicationRepository.getAllJobApplications().stream()
+                .map(jobApplication -> {
+                    Company company = getCompanyDetailsById(jobApplication.getCompanyId());
+                    JobPost jobPost = getJobPostDetailsById(jobApplication.getJobPostId());
+                    User user = getUserDetailsById(jobApplication.getUserId());
+
+                    return new JobApplicationAggregate(company,jobApplication, jobPost, user);
+                }).toList();
+    }
 }
 

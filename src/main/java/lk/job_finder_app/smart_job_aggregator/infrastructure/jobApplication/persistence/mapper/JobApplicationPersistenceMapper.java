@@ -11,15 +11,18 @@ public interface JobApplicationPersistenceMapper {
 
     //domain model to entity
     @Mapping(source = "userId", target = "user.userId")
-    @Mapping(source = "jobPostId", target = "jobPost.jobPostId")
+    @Mapping(source = "jobPostId", target = "jobPost.postId")
     JobApplicationEntity toEntity(JobApplication jobApplication);
 
     //entity to domain model
+    @Mapping(source = "jobPost.company.companyId", target = "companyId")
     @Mapping(source = "user.userId", target = "userId")
-    @Mapping(source = "jobPost.jobPostId", target = "jobPostId")
+    @Mapping(source = "jobPost.postId", target = "jobPostId")
     JobApplication toDomainModel(JobApplicationEntity jobApplicationEntity);
 
     //update
+    @Mapping(source = "userId", target = "user.userId")
+    @Mapping(source = "jobPostId", target = "jobPost.postId")
     JobApplicationEntity toUpdateEntity(
             JobApplication jobApplication,
             @MappingTarget

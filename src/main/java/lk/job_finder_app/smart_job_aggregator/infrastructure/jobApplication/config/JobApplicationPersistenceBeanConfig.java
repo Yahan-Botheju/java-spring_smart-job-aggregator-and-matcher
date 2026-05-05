@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class JobApplicationPersistenceBeanConfig implements JobApplicationRepository {
+class JobApplicationPersistenceBeanConfig {
     @Bean
     JobApplicationRepository jobApplicationRepository(
             JpaJobApplicationRepository jpaJobApplicationRepository,

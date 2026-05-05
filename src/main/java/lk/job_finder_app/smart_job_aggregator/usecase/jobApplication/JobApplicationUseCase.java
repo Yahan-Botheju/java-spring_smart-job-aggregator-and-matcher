@@ -1,4 +1,10 @@
 package lk.job_finder_app.smart_job_aggregator.usecase.jobApplication;
 
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplicationAggregate;
+
+import java.util.List;
+
 public interface JobApplicationUseCase {
+    //get all job applications
+    List<JobApplicationAggregate> getAllJobApplications();
 }
