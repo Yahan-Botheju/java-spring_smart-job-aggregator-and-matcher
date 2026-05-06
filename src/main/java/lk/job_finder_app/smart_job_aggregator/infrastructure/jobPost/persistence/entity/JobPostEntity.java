@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SoftDelete;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -32,6 +34,10 @@ public class JobPostEntity {
 
     @NotNull(message = "Salary cannot be empty")
     private BigDecimal postSalary;
+
+    @NotNull(message = "Date time cannot be empty")
+    private LocalDate createdAt;
+
 
     @Enumerated(EnumType.STRING)
     private JobStatus jobStatus;
