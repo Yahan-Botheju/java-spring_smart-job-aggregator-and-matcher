@@ -11,4 +11,7 @@ public interface JobApplicationUseCase {
 
     //create job application
     JobApplicationAggregate createJobApplication(JobApplication jobApplication);
+
+    //update job application
+    JobApplicationAggregate updateJobApplication(Long jobApplicationId, JobApplication jobApplication);
 }
