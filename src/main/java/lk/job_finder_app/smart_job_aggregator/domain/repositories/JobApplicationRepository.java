@@ -11,4 +11,8 @@ public interface JobApplicationRepository {
 
     //get all job applications
     List<JobApplication> getAllJobApplications();
+
+    //create job application
+    JobApplication createJobApplication(JobApplication jobApplication);
+
 }

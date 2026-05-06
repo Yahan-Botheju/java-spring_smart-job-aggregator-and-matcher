@@ -1,7 +1,9 @@
 package lk.job_finder_app.smart_job_aggregator.infrastructure.jobApplication.persistence;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplication;
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplicationAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobApplicationRepository;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.jobApplication.persistence.entity.JobApplicationEntity;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.jobApplication.persistence.jpa.JpaJobApplicationRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.jobApplication.persistence.mapper.JobApplicationPersistenceMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +32,13 @@ public class JobApplicationRepositoryImpl implements JobApplicationRepository {
     public List<JobApplication> getAllJobApplications(){
         return jpaJobApplicationRepository.findAll().stream()
                 .map(jobApplicationPersistenceMapper::toDomainModel).toList();
+    }
+
+    //create job application
+    @Override
+    public JobApplication createJobApplication(JobApplication jobApplication){
+        JobApplicationEntity jobApplicationEntity = jobApplicationPersistenceMapper.toEntity(jobApplication);
+        JobApplicationEntity savedJobApplicationEntity = jpaJobApplicationRepository.save(jobApplicationEntity);
+        return jobApplicationPersistenceMapper.toDomainModel(savedJobApplicationEntity);
     }
 }

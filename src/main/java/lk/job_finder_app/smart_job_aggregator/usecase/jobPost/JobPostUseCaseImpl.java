@@ -48,15 +48,15 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
     //create job post
     @Override
     public JobPostWithCompanyAggregate createJobPost(JobPost jobPost){
-        //check company availability
-        jobPostRepository.getJobPostById(jobPost.getCompanyId())
-                .orElseThrow(() -> new ResourceNotFoundException("Company Not Found"));
+        //check company availability using helper method
+        Company company = getCompanyDetailsById(jobPost.getCompanyId());
+
         //set default job status using domain model method
         jobPost.setDefaultJobStatus();
+
         //save new job post in db
         JobPost savedJobPost = jobPostRepository.createJobPost(jobPost);
-        //match job post with related company
-        Company company = getCompanyDetailsById(savedJobPost.getCompanyId());
+
         //return both results for response
         return new JobPostWithCompanyAggregate(savedJobPost, company);
 
