@@ -2,6 +2,7 @@ package lk.job_finder_app.smart_job_aggregator.domain.repositories;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +22,8 @@ public interface JobPostRepository {
 
     //delete job post
     void deleteJobPost(Long id);
+
+    //create expire job post
+    void expireOldJobPosts(LocalDate expiryLimit);
 
 }

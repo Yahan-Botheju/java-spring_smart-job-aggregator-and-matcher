@@ -8,6 +8,7 @@ import lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.persistence
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,25 @@ public class JobPostRepositoryImpl implements JobPostRepository {
     //inject persistence mapper
     private final JobPostPersistenceMapper jobPostPersistenceMapper;
 
+    /* ----- HELPER METHODS ----- */
+
+
     //job post find by id (CUSTOM METHOD)
     public Optional<JobPost> getJobPostById(Long postId){
         return jpaJobPostRepository.findById(postId).map(jobPostPersistenceMapper::toDomainModel);
     }
+
+    //save job post status expired in db
+    @Override
+    public void expireOldJobPosts(LocalDate expiryLimit) {
+        jpaJobPostRepository.expiredJobPosts(expiryLimit);
+    }
+
+
+
+
+
+    /* ----- PUBLIC METHODS ----- */
 
     //get all job posts
     @Override
@@ -68,9 +84,8 @@ public class JobPostRepositoryImpl implements JobPostRepository {
     //delete job post
     @Override
     public void deleteJobPost(Long postId){
-        JobPostEntity postEntity =  jpaJobPostRepository.findById(postId)
+        jpaJobPostRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job Post with id " + postId + " not found"));
-
         jpaJobPostRepository.deleteById(postId);
     }
 }

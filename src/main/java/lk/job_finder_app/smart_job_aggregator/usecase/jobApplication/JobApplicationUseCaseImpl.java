@@ -57,8 +57,9 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
     }
 
     //create job application
+    @Override
     public JobApplicationAggregate createJobApplication(JobApplication jobApplication){
-        //validate using helper methods
+        //validate using helper methods (JOB-POST, COMPANY, USER)
         JobPost jobPost = getJobPostDetailsById(jobApplication.getJobPostId());
         Company company = getCompanyDetailsById(jobPost.getCompanyId());
         User user = getUserDetailsById(jobApplication.getUserId());
@@ -71,5 +72,24 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
 
         return new JobApplicationAggregate(company,savedJobApplication, jobPost, user);
     }
+
+    //update job application
+    @Override
+    public JobApplicationAggregate updateJobApplication(
+            Long jobApplicationId,
+            JobApplication jobApplication
+    ){
+        jobApplicationRepository.jobApplicationFindById(jobApplicationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job Application Not Found" + " , " + jobApplicationId));
+
+        JobApplication savedJobApplication = jobApplicationRepository.updateJobApplication(jobApplicationId, jobApplication);
+
+        JobPost jobPost = getJobPostDetailsById(savedJobApplication.getJobPostId());
+        Company company = getCompanyDetailsById(savedJobApplication.getCompanyId());
+        User user = getUserDetailsById(savedJobApplication.getUserId());
+
+        return new JobApplicationAggregate(company,jobApplication, jobPost, user);
+    }
+
 }
 

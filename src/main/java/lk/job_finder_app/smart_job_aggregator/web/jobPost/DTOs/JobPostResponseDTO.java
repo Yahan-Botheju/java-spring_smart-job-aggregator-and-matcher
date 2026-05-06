@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -19,6 +20,7 @@ public class JobPostResponseDTO {
     private BigDecimal postSalary;
     private JobStatus jobStatus;
     private Set<String> skillsRequired;
+    private LocalDate createdAt;
 
     private Long companyId;
     private String companyName;

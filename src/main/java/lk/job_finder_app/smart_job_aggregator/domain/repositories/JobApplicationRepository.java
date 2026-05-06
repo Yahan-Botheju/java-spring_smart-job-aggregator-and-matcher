@@ -15,4 +15,6 @@ public interface JobApplicationRepository {
     //create job application
     JobApplication createJobApplication(JobApplication jobApplication);
 
+    //update job application
+    JobApplication updateJobApplication(Long jobApplicationId, JobApplication jobApplication);
 }

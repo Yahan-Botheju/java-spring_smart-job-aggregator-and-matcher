@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -16,6 +17,7 @@ public class JobPost {
     private String postTitle;
     private String postDescription;
     private BigDecimal postSalary;
+    private LocalDate createdAt;
     private JobStatus jobStatus;
     private Set<String> skillsRequired;
 
