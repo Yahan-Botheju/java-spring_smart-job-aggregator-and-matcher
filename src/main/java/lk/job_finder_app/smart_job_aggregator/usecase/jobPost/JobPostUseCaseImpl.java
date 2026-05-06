@@ -7,7 +7,9 @@ import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyReposit
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.scheduling.annotation.Scheduled;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,6 +29,12 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
                 .orElseThrow(() -> new ResourceNotFoundException("Company Not Found"));
     }
 
+    //set corn job
+    @Scheduled(cron = "0 * * * * *")
+    public void executeJobPostExpire(){
+        LocalDate expiryLimit = LocalDate.now().minusDays(1);
+        jobPostRepository.expireOldJobPosts(expiryLimit);
+    }
 
 
 
