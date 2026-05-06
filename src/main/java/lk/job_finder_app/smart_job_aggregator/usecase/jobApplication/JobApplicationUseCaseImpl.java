@@ -8,6 +8,7 @@ import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository
 import lk.job_finder_app.smart_job_aggregator.globalExceptionHandler.superClasses.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -53,6 +54,22 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
 
                     return new JobApplicationAggregate(company,jobApplication, jobPost, user);
                 }).toList();
+    }
+
+    //create job application
+    public JobApplicationAggregate createJobApplication(JobApplication jobApplication){
+        //validate using helper methods
+        JobPost jobPost = getJobPostDetailsById(jobApplication.getJobPostId());
+        Company company = getCompanyDetailsById(jobPost.getCompanyId());
+        User user = getUserDetailsById(jobApplication.getUserId());
+
+        jobApplication.setCompanyId(jobPost.getCompanyId());
+        //set date and time
+        jobApplication.setAppliedAt(LocalDateTime.now());
+
+        JobApplication savedJobApplication = jobApplicationRepository.createJobApplication(jobApplication);
+
+        return new JobApplicationAggregate(company,savedJobApplication, jobPost, user);
     }
 }
 
