@@ -60,4 +60,25 @@ public class JobApplicationController {
                         responseDTO
                 ));
     }
+
+    //update job application
+    @PutMapping("/{jobApplicationId}")
+    public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> updateJobApplication(
+            @PathVariable Long jobApplicationId,
+            @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
+    ){
+        JobApplication toDomainModel = jobApplicationWebMapper.toDomainModel(jobApplicationRequestDTO);
+        JobApplicationAggregate jobApplicationAggregate = jobApplicationUseCase.updateJobApplication(jobApplicationId, toDomainModel);
+        JobApplicationResponseDTO responseDTO = jobApplicationWebMapper.aggregatorResponseDTO(jobApplicationAggregate);
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Application updated successfully",
+                LocalDateTime.now(),
+                responseDTO
+        ));
+    }
+
+
+
 }
