@@ -32,7 +32,7 @@ public class JobPostController {
         //get all job posts as domain model list
         List<JobPostWithCompanyAggregate> jobPosts = jobPostUseCase.getAllJobPosts();
 
-        List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::customerResponseDTO).toList();
+        List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::customResponseDTO).toList();
 
         return ResponseEntity.ok(new StandardResponse<>(
                 200,
@@ -52,7 +52,7 @@ public class JobPostController {
         //set values to usecase (custom job post and company method)
         JobPostWithCompanyAggregate savedJobPost = jobPostUseCase.createJobPost(toDomainModel);
         //get response with company name id using custom mapper
-        JobPostResponseDTO responseDTO = jobPostWebMapper.customerResponseDTO(savedJobPost);
+        JobPostResponseDTO responseDTO = jobPostWebMapper.customResponseDTO(savedJobPost);
 
         return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/jobpost/"))
                 .body(new StandardResponse<>(
@@ -74,7 +74,7 @@ public class JobPostController {
 
         JobPostWithCompanyAggregate toUseCase = jobPostUseCase.updateJobPost(postId, toDomainModel);
 
-        JobPostResponseDTO responseDTO = jobPostWebMapper.customerResponseDTO(toUseCase);
+        JobPostResponseDTO responseDTO = jobPostWebMapper.customResponseDTO(toUseCase);
 
         return ResponseEntity.ok(new StandardResponse<>(
                 200,

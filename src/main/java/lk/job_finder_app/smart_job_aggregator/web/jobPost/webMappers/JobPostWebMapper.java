@@ -16,7 +16,7 @@ public interface JobPostWebMapper {
     JobPost toDomainModel(JobPostRequestDTO jobPostRequestDTO);
 
     //create custom responseDTO for showing customer id and name
-    default JobPostResponseDTO customerResponseDTO(JobPostWithCompanyAggregate jobPostWithCompanyAggregate) {
+    default JobPostResponseDTO customResponseDTO(JobPostWithCompanyAggregate jobPostWithCompanyAggregate) {
 
         JobPostResponseDTO responseDTO = toResponseDTO(jobPostWithCompanyAggregate.getJobPost());
 
