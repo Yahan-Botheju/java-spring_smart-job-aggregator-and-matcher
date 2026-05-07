@@ -70,6 +70,9 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
         jobApplication.setAppliedAt(LocalDateTime.now());
         jobApplication.jobApplicationDefaultStatus();
 
+        //call matching score method
+        jobApplication.calculateMatchScore(user.getSkillsRequired(), jobPost.getSkillsRequired());
+
         JobApplication savedJobApplication = jobApplicationRepository.createJobApplication(jobApplication);
 
         return new JobApplicationAggregate(company,savedJobApplication, jobPost, user);
