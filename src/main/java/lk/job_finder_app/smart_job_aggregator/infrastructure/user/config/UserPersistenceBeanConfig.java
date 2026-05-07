@@ -2,6 +2,7 @@ package lk.job_finder_app.smart_job_aggregator.infrastructure.user.config;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.User;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.role.persistence.jpa.JpaRoleRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.UserRepositoryImpl;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.jpa.JpaUserRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.mapper.UserPersistenceMapper;
@@ -13,8 +14,10 @@ class UserPersistenceBeanConfig {
     @Bean
     UserRepository userRepository(
             JpaUserRepository jpaUserRepository,
+            JpaRoleRepository jpaRoleRepository,
             UserPersistenceMapper userPersistenceMapper
+
     ) {
-        return new UserRepositoryImpl(jpaUserRepository, userPersistenceMapper);
+        return new UserRepositoryImpl(jpaUserRepository,userPersistenceMapper,jpaRoleRepository);
     }
 }
