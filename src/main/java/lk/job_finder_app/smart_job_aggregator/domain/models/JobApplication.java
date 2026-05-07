@@ -20,4 +20,11 @@ public class JobApplication {
     private Long userId;
     private Long jobPostId;
     private Long companyId;
+
+    //job application default status
+    public void jobApplicationDefaultStatus() {
+        if (this.applicationStatus == null) {
+            this.applicationStatus = ApplicationStatus.PENDING;
+        }
+    }
 }
