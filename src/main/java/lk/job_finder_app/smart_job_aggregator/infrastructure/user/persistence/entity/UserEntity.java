@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SoftDelete;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "users")
@@ -25,6 +27,10 @@ public class UserEntity {
     @Email
     @NotBlank(message = "Email is required")
     private String userEmail;
+
+    @ElementCollection
+    @CollectionTable(name = "job_post_skills", joinColumns = @JoinColumn(name = "postId"))
+    private Set<String> skillsRequired;
 
     @ManyToOne
     @JoinColumn(name = "roleId",  nullable = false)

@@ -10,7 +10,7 @@ public interface JobApplicationUseCase {
     List<JobApplicationAggregate> getAllJobApplications();
 
     //create job application
-    JobApplicationAggregate createJobApplication(JobApplication jobApplication);
+    JobApplicationAggregate applyForJob(JobApplication jobApplication);
 
     //update job application
     JobApplicationAggregate updateJobApplication(Long jobApplicationId, JobApplication jobApplication);

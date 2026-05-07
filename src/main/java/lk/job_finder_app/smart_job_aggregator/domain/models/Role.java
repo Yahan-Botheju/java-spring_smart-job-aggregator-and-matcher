@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class Role {
     private Long roleId;
     private RoleName roleName;
-    private String limitPerMinute;
+    private int limitPerMinute;
 }

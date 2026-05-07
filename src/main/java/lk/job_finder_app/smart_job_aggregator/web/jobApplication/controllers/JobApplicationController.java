@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/jobsapplicator/jobapplications")
+@RequestMapping("/api/v1/job-application")
 @RequiredArgsConstructor
 public class JobApplicationController {
 
@@ -44,12 +44,12 @@ public class JobApplicationController {
     }
 
     //create job application
-    @PostMapping("/")
-    public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> createJobApplication(
+    @PostMapping("/apply")
+    public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> applyForJob(
             @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
     ){
         JobApplication toDomainModel = jobApplicationWebMapper.toDomainModel(jobApplicationRequestDTO);
-        JobApplicationAggregate jobApplicationAggregate = jobApplicationUseCase.createJobApplication(toDomainModel);
+        JobApplicationAggregate jobApplicationAggregate = jobApplicationUseCase.applyForJob(toDomainModel);
         JobApplicationResponseDTO responseDTO = jobApplicationWebMapper.aggregatorResponseDTO(jobApplicationAggregate);
 
         return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/jobapplications/" + responseDTO.getJobApplicationId()))

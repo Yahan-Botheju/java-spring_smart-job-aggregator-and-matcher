@@ -13,7 +13,7 @@ public interface JobApplicationRepository {
     List<JobApplication> getAllJobApplications();
 
     //create job application
-    JobApplication createJobApplication(JobApplication jobApplication);
+    JobApplication applyForJob(JobApplication jobApplication);
 
     //update job application
     JobApplication updateJobApplication(Long jobApplicationId, JobApplication jobApplication);

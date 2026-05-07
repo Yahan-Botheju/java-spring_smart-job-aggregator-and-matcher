@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/jobsapplicator/company")
+@RequestMapping("/api/v1/company")
 @RequiredArgsConstructor
 public class CompanyController {
 

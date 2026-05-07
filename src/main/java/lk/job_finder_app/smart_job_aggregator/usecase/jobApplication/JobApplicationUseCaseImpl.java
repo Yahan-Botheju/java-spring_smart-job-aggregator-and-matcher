@@ -58,7 +58,7 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
 
     //create job application
     @Override
-    public JobApplicationAggregate createJobApplication(JobApplication jobApplication){
+    public JobApplicationAggregate applyForJob(JobApplication jobApplication){
         //validate using helper methods (JOB-POST, COMPANY, USER)
         JobPost jobPost = getJobPostDetailsById(jobApplication.getJobPostId());
         Company company = getCompanyDetailsById(jobPost.getCompanyId());
@@ -70,7 +70,10 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
         jobApplication.setAppliedAt(LocalDateTime.now());
         jobApplication.jobApplicationDefaultStatus();
 
-        JobApplication savedJobApplication = jobApplicationRepository.createJobApplication(jobApplication);
+        //call matching score method
+        jobApplication.calculateMatchScore(user.getSkillsRequired(), jobPost.getSkillsRequired());
+
+        JobApplication savedJobApplication = jobApplicationRepository.applyForJob(jobApplication);
 
         return new JobApplicationAggregate(company,savedJobApplication, jobPost, user);
     }
