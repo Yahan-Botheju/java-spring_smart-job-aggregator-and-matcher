@@ -36,7 +36,7 @@ public class JobApplicationRepositoryImpl implements JobApplicationRepository {
 
     //create job application
     @Override
-    public JobApplication createJobApplication(JobApplication jobApplication){
+    public JobApplication applyForJob(JobApplication jobApplication){
         JobApplicationEntity jobApplicationEntity = jobApplicationPersistenceMapper.toEntity(jobApplication);
         JobApplicationEntity savedJobApplicationEntity = jpaJobApplicationRepository.save(jobApplicationEntity);
         return jobApplicationPersistenceMapper.toDomainModel(savedJobApplicationEntity);
