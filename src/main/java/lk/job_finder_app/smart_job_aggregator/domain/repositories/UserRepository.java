@@ -10,6 +10,9 @@ public interface UserRepository {
     //get user by ID
     Optional<User> userFindById(Long userId);
 
+    //CUSTOM METHOD FOR RATE LIMIT
+    Optional<User> findByIdWithSkills(Long userId);
+
     //get all users
     List<User> getAllUsers();
 
