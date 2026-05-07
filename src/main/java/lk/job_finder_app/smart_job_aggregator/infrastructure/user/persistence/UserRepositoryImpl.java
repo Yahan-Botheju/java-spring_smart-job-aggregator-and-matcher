@@ -1,8 +1,10 @@
 package lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence;
 
-import aQute.bnd.annotation.headers.Category;
 import lk.job_finder_app.smart_job_aggregator.domain.models.User;
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.role.persistence.entity.RoleEntity;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.role.persistence.jpa.JpaRoleRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.entity.UserEntity;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.jpa.JpaUserRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.user.persistence.mapper.UserPersistenceMapper;
@@ -20,6 +22,8 @@ public class UserRepositoryImpl implements UserRepository {
     //inject user persistence mapper
     private final UserPersistenceMapper userPersistenceMapper;
 
+    //inject role jpa repo
+    private final JpaRoleRepository jpaRoleRepository;
 
     //get user by ID (CUSTOM METHOD FOR VALIDATION)
     @Override
@@ -39,6 +43,13 @@ public class UserRepositoryImpl implements UserRepository {
     public User createUser(User user){
         //domain model to entity
         UserEntity userEntity = userPersistenceMapper.toEntity(user);
+
+        //call custom query
+        RoleEntity defaultRole = jpaRoleRepository.findByRoleName(RoleName.USER)
+                .orElseThrow(() -> new ResourceNotFoundException("Role Not Found"));
+
+        //set default role
+        userEntity.setRole(defaultRole);
 
         UserEntity savedUserEntity = jpaUserRepository.save(userEntity);
         //turn entity do domain model return for response

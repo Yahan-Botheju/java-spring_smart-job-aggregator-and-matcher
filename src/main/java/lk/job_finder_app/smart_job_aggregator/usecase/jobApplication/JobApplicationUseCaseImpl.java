@@ -65,8 +65,10 @@ public class JobApplicationUseCaseImpl implements JobApplicationUseCase {
         User user = getUserDetailsById(jobApplication.getUserId());
 
         jobApplication.setCompanyId(jobPost.getCompanyId());
-        //set date and time
+
+        //set date and time, default status
         jobApplication.setAppliedAt(LocalDateTime.now());
+        jobApplication.jobApplicationDefaultStatus();
 
         JobApplication savedJobApplication = jobApplicationRepository.createJobApplication(jobApplication);
 
