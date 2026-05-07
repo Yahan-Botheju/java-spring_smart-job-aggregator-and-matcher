@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/jobsapplicator/jobpost/")
+@RequestMapping("/api/v1/job-post/")
 public class JobPostController {
 
     //inject use case
