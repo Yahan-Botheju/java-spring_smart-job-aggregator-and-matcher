@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,5 +27,18 @@ public class JobApplication {
         if (this.applicationStatus == null) {
             this.applicationStatus = ApplicationStatus.PENDING;
         }
+    }
+
+    //create method for calculate matching score
+    public void calculateMatchScore(
+            Set<String> userSkills,
+            Set<String> requiredJobSkills
+    ) {
+        if(userSkills == null || userSkills.isEmpty() ||requiredJobSkills == null || requiredJobSkills.isEmpty()) {
+            this.matchScore = 0.0;
+            return;
+        }
+        long matchCount = userSkills.stream().filter(requiredJobSkills::contains).count();
+        this.matchScore = (((double)  matchCount) /  requiredJobSkills.size()) * 100;
     }
 }
