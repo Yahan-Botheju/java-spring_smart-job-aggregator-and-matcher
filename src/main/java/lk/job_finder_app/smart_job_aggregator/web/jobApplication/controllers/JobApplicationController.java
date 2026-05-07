@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/jobsapplicator/jobapplications")
+@RequestMapping("/api/v1/job-application")
 @RequiredArgsConstructor
 public class JobApplicationController {
 
@@ -44,7 +44,7 @@ public class JobApplicationController {
     }
 
     //create job application
-    @PostMapping("/")
+    @PostMapping("/apply")
     public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> createJobApplication(
             @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
     ){
