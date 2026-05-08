@@ -62,6 +62,9 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
         //set default job status using domain model method
         jobPost.setDefaultJobStatus();
 
+        //set createdAt
+        jobPost.setCreatedAt(LocalDate.now());
+
         //save new job post in db
         JobPost savedJobPost = jobPostRepository.createJobPost(jobPost);
 
