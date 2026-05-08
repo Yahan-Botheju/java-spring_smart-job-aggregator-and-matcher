@@ -3,8 +3,10 @@ package lk.job_finder_app.smart_job_aggregator.usecase.jobPost;
 import lk.job_finder_app.smart_job_aggregator.domain.models.Company;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
+import lk.job_finder_app.smart_job_aggregator.domain.models.User;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
+import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +23,9 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
     //inject company repo
     private final CompanyRepository companyRepository;
 
+    //inject user repo
+    private final UserRepository userRepository;
+
     /* ----- HELPER METHODS ----- */
 
     //method for getting company details
@@ -36,7 +41,9 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
         jobPostRepository.expireOldJobPosts(expiryLimit);
     }
 
+    public List<JobPost> getRecommendedJobsForUser(Long userId){
 
+    }
 
 
 
