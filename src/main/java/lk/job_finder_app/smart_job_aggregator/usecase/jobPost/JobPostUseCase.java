@@ -17,4 +17,7 @@ public interface JobPostUseCase {
 
     //delete job post
     void deleteJobPost(Long postId);
+
+    //job matching
+    List<JobPostWithCompanyAggregate> getRecommendedJobsForUser(Long userId);
 }
