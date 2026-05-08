@@ -1,8 +1,12 @@
 package lk.job_finder_app.smart_job_aggregator.web.user.controllers;
 
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.models.User;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
+import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.usecase.user.UserUseCase;
+import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostResponseDTO;
+import lk.job_finder_app.smart_job_aggregator.web.jobPost.webMappers.JobPostWebMapper;
 import lk.job_finder_app.smart_job_aggregator.web.user.DTOs.UserRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.user.DTOs.UserResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.user.webMappers.UserWebMapper;
@@ -24,6 +28,12 @@ public class UserController {
 
     //inject user web mapper
     private final UserWebMapper userWebMapper;
+
+    //inject job-post usecase
+    private final JobPostUseCase jobPostUseCase;
+
+    //inject job-post web mapper
+    private final JobPostWebMapper jobPostWebMapper;
 
     //get all users
     @GetMapping("/")
@@ -94,4 +104,21 @@ public class UserController {
         userUseCase.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
+
+    //use job post matching method
+    @GetMapping("/recommendations/{userId}")
+    public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getRecommendedJobPostsForUser(
+            @PathVariable Long userId
+    ){
+        List<JobPostWithCompanyAggregate> jobPosts = jobPostUseCase.getRecommendedJobsForUser(userId);
+        List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::customResponseDTO).toList();
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Details fetched successfully",
+                LocalDateTime.now(),
+                responseDTO
+        ));
+    }
+
 }
