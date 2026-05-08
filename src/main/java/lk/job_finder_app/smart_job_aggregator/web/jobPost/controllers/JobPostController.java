@@ -71,9 +71,7 @@ public class JobPostController {
             @RequestBody JobPostRequestDTO jobPostRequestDTO
     ){
         JobPost toDomainModel = jobPostWebMapper.toDomainModel(jobPostRequestDTO);
-
         JobPostWithCompanyAggregate toUseCase = jobPostUseCase.updateJobPost(postId, toDomainModel);
-
         JobPostResponseDTO responseDTO = jobPostWebMapper.customResponseDTO(toUseCase);
 
         return ResponseEntity.ok(new StandardResponse<>(
@@ -91,6 +89,22 @@ public class JobPostController {
     ){
         jobPostUseCase.deleteJobPost(postId);
         return ResponseEntity.noContent().build();
+    }
+
+    //job post matching
+    @GetMapping("/recommendations/{userId}")
+    public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getRecommendedJobPostsForUser(
+            @PathVariable Long userId
+    ){
+        List<JobPostWithCompanyAggregate> jobPosts = jobPostUseCase.getRecommendedJobsForUser(userId);
+        List<JobPostResponseDTO> responseDTO = jobPosts.stream().map(jobPostWebMapper::customResponseDTO).toList();
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Details fetched successfully",
+                LocalDateTime.now(),
+                responseDTO
+        ));
     }
 
 }
