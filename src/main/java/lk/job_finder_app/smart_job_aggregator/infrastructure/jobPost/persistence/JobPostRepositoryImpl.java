@@ -11,6 +11,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class JobPostRepositoryImpl implements JobPostRepository {
@@ -35,7 +36,14 @@ public class JobPostRepositoryImpl implements JobPostRepository {
         jpaJobPostRepository.expiredJobPosts(expiryLimit);
     }
 
-
+    //get matching jobs from custom query
+    @Override
+    public List<JobPost> findJobsByMatchingSkills(
+            Set<String> userSkills
+    ){
+        List<JobPostEntity> entities = jpaJobPostRepository.findJobsByMatchingSkills(userSkills);
+        return entities.stream().map(jobPostPersistenceMapper::toDomainModel).toList();
+    }
 
 
 
