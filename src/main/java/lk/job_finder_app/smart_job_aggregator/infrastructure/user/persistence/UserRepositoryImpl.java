@@ -25,11 +25,25 @@ public class UserRepositoryImpl implements UserRepository {
     //inject role jpa repo
     private final JpaRoleRepository jpaRoleRepository;
 
+
+    /*  ----- HELPER METHODS -----  */
+
+
     //get user by ID (CUSTOM METHOD FOR VALIDATION)
     @Override
     public Optional<User> userFindById(Long userId){
         return jpaUserRepository.findById(userId).map(userPersistenceMapper::toDomainModel);
     }
+
+    //create custom method for rate limit to prevent lazy loading
+    @Override
+    public Optional<User> findByIdWithSkills(Long userId){
+        return jpaUserRepository.findByIdWithSkills(userId).map(userPersistenceMapper::toDomainModel);
+    }
+
+
+
+    /*  ----- PUBLIC METHODS -----  */
 
     //get all users
     @Override

@@ -2,6 +2,7 @@ package lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.config;
 
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
+import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +13,9 @@ class JobPostUseCaseBeanConfig {
     @Bean
     JobPostUseCase jobPostUseCase(
             JobPostRepository jobPostRepository,
-            CompanyRepository companyRepository
+            CompanyRepository companyRepository,
+            UserRepository userRepository
     ) {
-        return new JobPostUseCaseImpl(jobPostRepository, companyRepository);
+        return new JobPostUseCaseImpl(jobPostRepository, companyRepository, userRepository);
     }
 }
