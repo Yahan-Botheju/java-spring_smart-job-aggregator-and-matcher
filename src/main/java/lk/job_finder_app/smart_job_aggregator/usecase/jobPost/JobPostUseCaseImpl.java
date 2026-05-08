@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class JobPostUseCaseImpl implements JobPostUseCase{
@@ -41,9 +42,6 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
         jobPostRepository.expireOldJobPosts(expiryLimit);
     }
 
-    public List<JobPost> getRecommendedJobsForUser(Long userId){
-
-    }
 
 
 
@@ -105,4 +103,31 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
         jobPostRepository.deleteJobPost(postId);
     }
+
+    //job matching related to user
+    @Override
+    public List<JobPostWithCompanyAggregate> getRecommendedJobsForUser(Long userId){
+        //check user availability
+        User user = userRepository.userFindById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+
+        //get skills as set of user
+        Set<String> userSkills = user.getSkillsRequired();
+
+        //check user skills
+        if (userSkills == null || userSkills.isEmpty()){
+            return List.of();
+        }
+
+        //get jobs that matches to user
+        List<JobPost> matchedJobs = jobPostRepository.findJobsByMatchingSkills(userSkills);
+
+        //set related details and return
+        return  matchedJobs.stream().map(jobPosts -> {
+            Company company = getCompanyDetailsById(jobPosts.getCompanyId());
+            return new JobPostWithCompanyAggregate(jobPosts, company);
+        }).toList();
+
+    }
+
 }
