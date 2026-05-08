@@ -5,6 +5,7 @@ import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface JobPostRepository {
 
@@ -25,5 +26,8 @@ public interface JobPostRepository {
 
     //create expire job post
     void expireOldJobPosts(LocalDate expiryLimit);
+
+    //matching jobs
+    List<JobPost> findJobsByMatchingSkills(Set<String> userSkills);
 
 }
