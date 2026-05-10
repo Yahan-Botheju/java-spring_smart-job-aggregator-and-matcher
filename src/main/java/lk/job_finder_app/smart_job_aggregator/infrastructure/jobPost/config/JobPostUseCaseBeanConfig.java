@@ -3,6 +3,8 @@ package lk.job_finder_app.smart_job_aggregator.infrastructure.jobPost.config;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.client.TheMuseClient;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.mappers.ExternalJobMapper;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCaseImpl;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +16,10 @@ class JobPostUseCaseBeanConfig {
     JobPostUseCase jobPostUseCase(
             JobPostRepository jobPostRepository,
             CompanyRepository companyRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            TheMuseClient theMuseClient,
+            ExternalJobMapper externalJobMapper
     ) {
-        return new JobPostUseCaseImpl(jobPostRepository, companyRepository, userRepository);
+        return new JobPostUseCaseImpl(jobPostRepository, companyRepository, userRepository,  theMuseClient, externalJobMapper);
     }
 }

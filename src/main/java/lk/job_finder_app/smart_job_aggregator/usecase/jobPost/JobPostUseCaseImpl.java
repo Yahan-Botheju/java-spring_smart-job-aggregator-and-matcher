@@ -7,6 +7,9 @@ import lk.job_finder_app.smart_job_aggregator.domain.models.User;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.CompanyRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostRepository;
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.DTOs.ExternalJobResponseDTO;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.client.TheMuseClient;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.mappers.ExternalJobMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 public class JobPostUseCaseImpl implements JobPostUseCase{
@@ -26,6 +30,13 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
     //inject user repo
     private final UserRepository userRepository;
+
+    //inject muse client
+    private final TheMuseClient theMuseClient;
+
+    //inject external job mapper
+    private final ExternalJobMapper externalJobMapper;
+
 
     /* ----- HELPER METHODS ----- */
 
@@ -129,5 +140,25 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
         }).toList();
 
     }
+
+    public List<JobPostWithCompanyAggregate> getMultiSourceRecommendations(
+            Long userId
+    ){
+        //allocate the data that taken from local db
+        CompletableFuture<List<JobPostWithCompanyAggregate>>
+                localJobsFuture = CompletableFuture.supplyAsync(() -> {
+                    return getRecommendedJobsForUser(userId);
+        });
+
+        CompletableFuture<List<JobPostWithCompanyAggregate>>
+                externalJobsFuture = CompletableFuture.supplyAsync(() -> {
+            List<ExternalJobResponseDTO.TheMuseJob> museJobs = theMuseClient.fetchExternalJobs();
+
+            return museJobs.stream().map( theMuseJob -> {
+                JobPost posts = ex
+            })
+        })
+    }
+
 
 }
