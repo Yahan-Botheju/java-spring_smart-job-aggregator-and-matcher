@@ -9,6 +9,7 @@ import lk.job_finder_app.smart_job_aggregator.domain.repositories.JobPostReposit
 import lk.job_finder_app.smart_job_aggregator.domain.repositories.UserRepository;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.DTOs.ExternalJobResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.client.TheMuseClient;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.mappers.ExternalJobMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,6 +33,10 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
     //inject muse client
     private final TheMuseClient theMuseClient;
+
+    //inject external job mapper
+    private final ExternalJobMapper externalJobMapper;
+
 
     /* ----- HELPER METHODS ----- */
 
@@ -147,7 +152,11 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
 
         CompletableFuture<List<JobPostWithCompanyAggregate>>
                 externalJobsFuture = CompletableFuture.supplyAsync(() -> {
-            List<ExternalJobResponseDTO.TheMuseJob> museJobs =
+            List<ExternalJobResponseDTO.TheMuseJob> museJobs = theMuseClient.fetchExternalJobs();
+
+            return museJobs.stream().map( theMuseJob -> {
+                JobPost posts = ex
+            })
         })
     }
 
