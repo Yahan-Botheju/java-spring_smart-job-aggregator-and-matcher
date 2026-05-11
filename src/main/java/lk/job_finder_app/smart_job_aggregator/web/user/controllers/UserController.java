@@ -1,8 +1,10 @@
 package lk.job_finder_app.smart_job_aggregator.web.user.controllers;
 
+import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.models.User;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
+import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.mappers.ExternalJobMapper;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.usecase.user.UserUseCase;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostResponseDTO;
@@ -119,6 +121,24 @@ public class UserController {
                 LocalDateTime.now(),
                 responseDTO
         ));
+    }
+
+    //get multisource data related to use skills
+    @GetMapping("/recommendations/multi-source/{userId}")
+    public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getMultiSourceRecommendations(
+            @PathVariable Long userId
+    ){
+        List<JobPostWithCompanyAggregate> threadJobPost = jobPostUseCase.getMultiSourceRecommendations(userId);
+        List<JobPostResponseDTO> responseDTO = threadJobPost.stream().map(jobPostWebMapper::customResponseDTO).toList();
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                200,
+                "Details fetched successfully",
+                LocalDateTime.now(),
+                responseDTO
+        ));
+
+
     }
 
 }

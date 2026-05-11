@@ -20,4 +20,7 @@ public interface JobPostUseCase {
 
     //job matching
     List<JobPostWithCompanyAggregate> getRecommendedJobsForUser(Long userId);
+
+    //threading method
+    public List<JobPostWithCompanyAggregate> getMultiSourceRecommendations(Long userId);
 }

@@ -15,6 +15,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -54,6 +55,17 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
     }
 
 
+    //get skills of applier
+    private List<JobPostWithCompanyAggregate> getJobsBySkills(Set<String> userSkills) {
+        if (userSkills == null || userSkills.isEmpty()) return List.of();
+        //get matching jobs via custom query
+        List<JobPost> matchedJobs = jobPostRepository.findJobsByMatchingSkills(userSkills);
+
+        return matchedJobs.stream().map(job -> {
+            Company company = getCompanyDetailsById(job.getCompanyId());
+            return new JobPostWithCompanyAggregate(job, company);
+        }).toList();
+    }
 
 
     /* ----- PUBLIC METHODS ----- */
@@ -118,46 +130,51 @@ public class JobPostUseCaseImpl implements JobPostUseCase{
     //job matching related to user
     @Override
     public List<JobPostWithCompanyAggregate> getRecommendedJobsForUser(Long userId){
+        User user = userRepository.userFindById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+
+        return getJobsBySkills(user.getSkillsRequired());
+    }
+
+    //get db and API data related to user skills
+    public List<JobPostWithCompanyAggregate> getMultiSourceRecommendations(
+            Long userId
+    ){
         //check user availability
         User user = userRepository.userFindById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
-        //get skills as set of user
+        //get user skills via custom query
         Set<String> userSkills = user.getSkillsRequired();
 
-        //check user skills
-        if (userSkills == null || userSkills.isEmpty()){
-            return List.of();
-        }
 
-        //get jobs that matches to user
-        List<JobPost> matchedJobs = jobPostRepository.findJobsByMatchingSkills(userSkills);
-
-        //set related details and return
-        return  matchedJobs.stream().map(jobPosts -> {
-            Company company = getCompanyDetailsById(jobPosts.getCompanyId());
-            return new JobPostWithCompanyAggregate(jobPosts, company);
-        }).toList();
-
-    }
-
-    public List<JobPostWithCompanyAggregate> getMultiSourceRecommendations(
-            Long userId
-    ){
         //allocate the data that taken from local db
         CompletableFuture<List<JobPostWithCompanyAggregate>>
                 localJobsFuture = CompletableFuture.supplyAsync(() -> {
-                    return getRecommendedJobsForUser(userId);
+                    return getJobsBySkills(userSkills);
         });
 
+        //external API jobs
         CompletableFuture<List<JobPostWithCompanyAggregate>>
                 externalJobsFuture = CompletableFuture.supplyAsync(() -> {
             List<ExternalJobResponseDTO.TheMuseJob> museJobs = theMuseClient.fetchExternalJobs();
 
             return museJobs.stream().map( theMuseJob -> {
-                JobPost posts = ex
-            })
-        })
+                JobPost posts = externalJobMapper.toDomain(theMuseJob);
+
+                Company externalCompany = new Company();
+                externalCompany.setCompanyName(theMuseJob.company().name());
+
+                return new JobPostWithCompanyAggregate(posts, externalCompany);
+            }).toList();
+        });
+
+        return localJobsFuture.thenCombine(externalJobsFuture,
+                (local, external) -> {
+            List<JobPostWithCompanyAggregate> all = new ArrayList<>(local);
+            all.addAll(external);
+            return all;
+        }).join();
     }
 
 
