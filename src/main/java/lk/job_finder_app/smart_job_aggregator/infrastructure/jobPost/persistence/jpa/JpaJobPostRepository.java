@@ -21,6 +21,10 @@ public interface JpaJobPostRepository extends JpaRepository<JobPostEntity, Long>
 
 
 
-    @Query("SELECT DISTINCT j FROM JobPostEntity j JOIN j.skillsRequired s WHERE s IN :userSkills")
+    @Query("SELECT DISTINCT j FROM JobPostEntity j " +
+            "LEFT JOIN FETCH j.skillsRequired " +
+            "WHERE EXISTS (SELECT s FROM j.skillsRequired s WHERE s IN :userSkills)")
     List<JobPostEntity> findJobsByMatchingSkills(@Param("userSkills") Set<String> userSkills);
+
+
 }
