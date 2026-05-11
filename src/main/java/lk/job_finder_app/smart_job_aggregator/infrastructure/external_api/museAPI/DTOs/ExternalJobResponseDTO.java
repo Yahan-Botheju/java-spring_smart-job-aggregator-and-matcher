@@ -5,15 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record ExternalJobResponseDTO(
-        @JsonProperty("results")List<TheMuseJob> jobs
-        ) {
+        @JsonProperty("results") List<TheMuseJob> jobs
+) {
+    //map each records that taken from API
     public record TheMuseJob(
             String name,
-            String content,
-            String company,
+            String contents,
+            Company company,
             List<Location> locations
     ) {}
 
-    public record Company(String name){}
-    public record Location(String name){}
+    public record Company(String name) {}
+    public record Location(String name) {}
 }
