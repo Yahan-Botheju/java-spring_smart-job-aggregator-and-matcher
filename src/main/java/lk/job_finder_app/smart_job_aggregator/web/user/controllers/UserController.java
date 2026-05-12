@@ -57,6 +57,7 @@ public class UserController {
     }
     //create user
     @PostMapping("/")
+    @Authorize({RoleName.USER,  RoleName.ADMIN})
     public ResponseEntity<StandardResponse<UserResponseDTO>> createUser(
             @RequestBody UserRequestDTO userRequestDTO
     ){
@@ -81,6 +82,7 @@ public class UserController {
     }
     //update user
     @PutMapping("/{userId}")
+    @Authorize({RoleName.USER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<UserResponseDTO>> updateUser(
             @PathVariable Long userId,
             @RequestBody UserRequestDTO userRequestDTO
@@ -111,6 +113,7 @@ public class UserController {
 
     //use job post matching method
     @GetMapping("/recommendations/{userId}")
+    @Authorize({RoleName.USER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getRecommendedJobPostsForUser(
             @PathVariable Long userId
     ){
@@ -127,6 +130,7 @@ public class UserController {
 
     //get multisource data related to use skills
     @GetMapping("/recommendations/multi-source/{userId}")
+    @Authorize({RoleName.USER,  RoleName.ADMIN})
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getMultiSourceRecommendations(
             @PathVariable Long userId
     ){
