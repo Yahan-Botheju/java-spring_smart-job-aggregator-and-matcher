@@ -2,11 +2,13 @@ package lk.job_finder_app.smart_job_aggregator.web.jobPost.controllers;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.webMappers.JobPostWebMapper;
+import lk.job_finder_app.smart_job_aggregator.web.security.Authorize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ public class JobPostController {
 
     //get all job posts
     @GetMapping("/")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getAllJobPosts() {
         //get all job posts as domain model list
         List<JobPostWithCompanyAggregate> jobPosts = jobPostUseCase.getAllJobPosts();
@@ -44,6 +47,7 @@ public class JobPostController {
 
     //create new post
     @PostMapping("/")
+    @Authorize({RoleName.COMPANY_RECRUITER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<JobPostResponseDTO>> createJobPost(
             @RequestBody JobPostRequestDTO jobPostRequestDTO
             ){
@@ -66,6 +70,7 @@ public class JobPostController {
 
     //update job post
     @PutMapping("/{postId}")
+    @Authorize({RoleName.COMPANY_RECRUITER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<JobPostResponseDTO>> updateJobPost(
             @PathVariable Long postId,
             @RequestBody JobPostRequestDTO jobPostRequestDTO
@@ -84,6 +89,7 @@ public class JobPostController {
 
     //delete job post
     @DeleteMapping("/{postId}")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<String> deleteJobPost(
             @PathVariable Long postId
     ){
@@ -93,6 +99,7 @@ public class JobPostController {
 
     //job post matching
     @GetMapping("/recommendations/{userId}")
+    @Authorize({RoleName.COMPANY_RECRUITER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getRecommendedJobPostsForUser(
             @PathVariable Long userId
     ){
