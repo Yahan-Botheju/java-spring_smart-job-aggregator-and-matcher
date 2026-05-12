@@ -1,11 +1,13 @@
 package lk.job_finder_app.smart_job_aggregator.web.company.controllers;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.Company;
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
 import lk.job_finder_app.smart_job_aggregator.usecase.company.CompanyUseCase;
 import lk.job_finder_app.smart_job_aggregator.web.company.DTOs.CompanyRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.company.DTOs.CompanyResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.company.webMappers.CompanyWebMapper;
+import lk.job_finder_app.smart_job_aggregator.web.security.Authorize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ public class CompanyController {
 
     //get all companies
     @GetMapping("/")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<CompanyResponseDTO>>> getAllCompanies(){
         List<Company> companies = companyUseCase.getAllCompanies();
 
@@ -43,6 +46,7 @@ public class CompanyController {
 
     //create company
     @PostMapping("/")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<CompanyResponseDTO>> createCompany(
                                @RequestBody CompanyRequestDTO companyRequestDTO
     ){
@@ -65,6 +69,7 @@ public class CompanyController {
 
     //update company
     @PutMapping("/{companyId}")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<CompanyResponseDTO>> updateCompany(
             @PathVariable Long companyId,
             @RequestBody CompanyRequestDTO companyRequestDTO
@@ -86,6 +91,7 @@ public class CompanyController {
 
     //delete company
     @DeleteMapping("/{companyId}")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<String> deleteCompany(
             @PathVariable Long companyId
     ){
