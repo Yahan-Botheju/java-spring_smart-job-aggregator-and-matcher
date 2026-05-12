@@ -2,11 +2,13 @@ package lk.job_finder_app.smart_job_aggregator.web.jobApplication.controllers;
 
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplication;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplicationAggregate;
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobApplication.JobApplicationUseCase;
 import lk.job_finder_app.smart_job_aggregator.web.jobApplication.DTOs.JobApplicationRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobApplication.DTOs.JobApplicationResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobApplication.webMappers.JobApplicationWebMapper;
+import lk.job_finder_app.smart_job_aggregator.web.security.Authorize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,7 @@ public class JobApplicationController {
 
     //get all job applications
     @GetMapping("/")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<JobApplicationResponseDTO>>> getAllJobApplications(){
         List<JobApplicationAggregate> jobApplications = jobApplicationUseCase.getAllJobApplications();
 
@@ -45,6 +48,7 @@ public class JobApplicationController {
 
     //create job application
     @PostMapping("/apply")
+    @Authorize({RoleName.ADMIN, RoleName.USER})
     public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> applyForJob(
             @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
     ){
@@ -63,6 +67,7 @@ public class JobApplicationController {
 
     //update job application
     @PutMapping("/{jobApplicationId}")
+    @Authorize({RoleName.ADMIN, RoleName.USER})
     public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> updateJobApplication(
             @PathVariable Long jobApplicationId,
             @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
