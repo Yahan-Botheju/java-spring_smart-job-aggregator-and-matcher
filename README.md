@@ -513,13 +513,15 @@ All API responses follow a common structure.
 
 ### 👤 User Endpoints
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | /api/v1/user/ | Get all users |
-| POST | /api/v1/user/ | Create user |
-| PUT | /api/v1/user/{userId} | Update user |
-| DELETE | /api/v1/user/{userId} | Delete user |
-| GET | /api/v1/job-post/recommendations/{userId} | Recommended jobs |
+| Method | Endpoint | Description                   |
+|---|---|-------------------------------|
+| GET | /api/v1/user/ | Get all users                 |
+| GET | /api/v1/job-post/recommendations/{userId} | Recommended jobs              |
+| GET | /recommendations/multi-source/{userId} | Multisources Recommended jobs |
+| POST | /api/v1/user/ | Create user                   |
+| PUT | /api/v1/user/{userId} | Update user                   |
+| DELETE | /api/v1/user/{userId} | Delete user                   |
+
 
 ---
 
