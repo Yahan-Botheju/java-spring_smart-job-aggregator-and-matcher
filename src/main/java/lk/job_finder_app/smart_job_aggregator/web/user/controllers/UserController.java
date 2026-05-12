@@ -1,14 +1,14 @@
 package lk.job_finder_app.smart_job_aggregator.web.user.controllers;
 
-import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.models.User;
+import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
-import lk.job_finder_app.smart_job_aggregator.infrastructure.external_api.museAPI.mappers.ExternalJobMapper;
 import lk.job_finder_app.smart_job_aggregator.usecase.jobPost.JobPostUseCase;
 import lk.job_finder_app.smart_job_aggregator.usecase.user.UserUseCase;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.DTOs.JobPostResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.jobPost.webMappers.JobPostWebMapper;
+import lk.job_finder_app.smart_job_aggregator.web.security.Authorize;
 import lk.job_finder_app.smart_job_aggregator.web.user.DTOs.UserRequestDTO;
 import lk.job_finder_app.smart_job_aggregator.web.user.DTOs.UserResponseDTO;
 import lk.job_finder_app.smart_job_aggregator.web.user.webMappers.UserWebMapper;
@@ -39,6 +39,7 @@ public class UserController {
 
     //get all users
     @GetMapping("/")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<UserResponseDTO>>> getAllUsers(){
         List<User> usersDomainModel = userUseCase.getAllUsers();
 
@@ -100,6 +101,7 @@ public class UserController {
     }
     //delete user
     @DeleteMapping("/{userId}")
+    @Authorize(RoleName.ADMIN)
     public ResponseEntity<String> deleteUser(
             @PathVariable Long userId
     ){
