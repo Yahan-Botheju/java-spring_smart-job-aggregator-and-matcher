@@ -516,8 +516,8 @@ All API responses follow a common structure.
 | Method | Endpoint | Description                   |
 |---|---|-------------------------------|
 | GET | /api/v1/user/ | Get all users                 |
-| GET | /api/v1/job-post/recommendations/{userId} | Recommended jobs              |
-| GET | /recommendations/multi-source/{userId} | Multisources Recommended jobs |
+| GET | /api/v1/user/recommendations/{userId} | Recommended jobs              |
+| GET | api/v1/user/recommendations/multi-source/{userId} | Multisources Recommended jobs |
 | POST | /api/v1/user/ | Create user                   |
 | PUT | /api/v1/user/{userId} | Update user                   |
 | DELETE | /api/v1/user/{userId} | Delete user                   |
