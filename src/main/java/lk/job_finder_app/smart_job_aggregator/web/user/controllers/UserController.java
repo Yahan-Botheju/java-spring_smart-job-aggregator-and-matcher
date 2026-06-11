@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.web.user.controllers;
 
+import jakarta.validation.Valid;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.models.User;
 import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -38,7 +39,7 @@ public class UserController {
     private final JobPostWebMapper jobPostWebMapper;
 
     //get all users
-    @GetMapping("/")
+    @GetMapping
     @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<UserResponseDTO>>> getAllUsers(){
         List<User> usersDomainModel = userUseCase.getAllUsers();
@@ -56,10 +57,10 @@ public class UserController {
 
     }
     //create user
-    @PostMapping("/")
+    @PostMapping
     @Authorize({RoleName.USER,  RoleName.ADMIN})
     public ResponseEntity<StandardResponse<UserResponseDTO>> createUser(
-            @RequestBody UserRequestDTO userRequestDTO
+            @Valid @RequestBody UserRequestDTO userRequestDTO
     ){
         //turn to domain model
         User toDomainModel = userWebMapper.toDomainModel(userRequestDTO);
@@ -70,7 +71,7 @@ public class UserController {
         //turn to response
         UserResponseDTO toResponseDTO = userWebMapper.toResponseDTO(responseModel);
 
-        return  ResponseEntity.created(URI.create("/api/v1/jobsapplicator/users/" + "," + toResponseDTO.getUserId())).body(
+        return  ResponseEntity.created(URI.create("/api/v1/users/" + "," + toResponseDTO.getUserId())).body(
                 new StandardResponse<>(
                         201,
                         "user created successfully",
@@ -85,7 +86,7 @@ public class UserController {
     @Authorize({RoleName.USER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<UserResponseDTO>> updateUser(
             @PathVariable Long userId,
-            @RequestBody UserRequestDTO userRequestDTO
+            @Valid @RequestBody UserRequestDTO userRequestDTO
     ){
         User toDomainModel = userWebMapper.toDomainModel(userRequestDTO);
         User responseModel = userUseCase.updateUser(userId, toDomainModel);
@@ -104,7 +105,7 @@ public class UserController {
     //delete user
     @DeleteMapping("/{userId}")
     @Authorize(RoleName.ADMIN)
-    public ResponseEntity<String> deleteUser(
+    public ResponseEntity<Void> deleteUser(
             @PathVariable Long userId
     ){
         userUseCase.deleteUser(userId);
@@ -112,7 +113,7 @@ public class UserController {
     }
 
     //use job post matching method
-    @GetMapping("/recommendations/{userId}")
+    @GetMapping("/{userId}/recommendations")
     @Authorize({RoleName.USER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getRecommendedJobPostsForUser(
             @PathVariable Long userId
@@ -122,14 +123,14 @@ public class UserController {
 
         return ResponseEntity.ok(new StandardResponse<>(
                 200,
-                "Details fetched successfully",
+                "Details fetched successfully" + " , " + userId,
                 LocalDateTime.now(),
                 responseDTO
         ));
     }
 
     //get multisource data related to use skills
-    @GetMapping("/recommendations/multi-source/{userId}")
+    @GetMapping("recommendations/{userId}/multi-source")
     @Authorize({RoleName.USER,  RoleName.ADMIN})
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getMultiSourceRecommendations(
             @PathVariable Long userId
@@ -139,7 +140,7 @@ public class UserController {
 
         return ResponseEntity.ok(new StandardResponse<>(
                 200,
-                "Details fetched successfully",
+                "Details fetched successfully" + " , " + userId,
                 LocalDateTime.now(),
                 responseDTO
         ));

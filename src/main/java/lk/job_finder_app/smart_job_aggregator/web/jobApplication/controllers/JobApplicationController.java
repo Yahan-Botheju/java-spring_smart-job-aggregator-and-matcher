@@ -57,7 +57,7 @@ public class JobApplicationController {
         JobApplicationAggregate jobApplicationAggregate = jobApplicationUseCase.applyForJob(toDomainModel);
         JobApplicationResponseDTO responseDTO = jobApplicationWebMapper.aggregatorResponseDTO(jobApplicationAggregate);
 
-        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/jobapplications/" + responseDTO.getJobApplicationId()))
+        return ResponseEntity.created(URI.create("/api/v1/job-applications/" + responseDTO.getJobApplicationId()))
                 .body(new StandardResponse<>(
                         201,
                         "Job application created",
