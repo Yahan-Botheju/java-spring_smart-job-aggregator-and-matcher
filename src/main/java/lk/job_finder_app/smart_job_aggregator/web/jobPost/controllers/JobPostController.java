@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.web.jobPost.controllers;
 
+import jakarta.validation.Valid;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPost;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobPostWithCompanyAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/job-post/")
+@RequestMapping("/api/v1/job-posts")
 public class JobPostController {
 
     //inject use case
@@ -29,7 +30,7 @@ public class JobPostController {
     private final JobPostWebMapper jobPostWebMapper;
 
     //get all job posts
-    @GetMapping("/")
+    @GetMapping
     @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getAllJobPosts() {
         //get all job posts as domain model list
@@ -46,10 +47,10 @@ public class JobPostController {
     }
 
     //create new post
-    @PostMapping("/")
+    @PostMapping
     @Authorize({RoleName.COMPANY_RECRUITER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<JobPostResponseDTO>> createJobPost(
-            @RequestBody JobPostRequestDTO jobPostRequestDTO
+            @Valid @RequestBody JobPostRequestDTO jobPostRequestDTO
             ){
         //turn requestDTO to domain model
         JobPost toDomainModel = jobPostWebMapper.toDomainModel(jobPostRequestDTO);
@@ -58,7 +59,7 @@ public class JobPostController {
         //get response with company name id using custom mapper
         JobPostResponseDTO responseDTO = jobPostWebMapper.customResponseDTO(savedJobPost);
 
-        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/jobpost/"))
+        return ResponseEntity.created(URI.create("/api/v1/job-posts/"))
                 .body(new StandardResponse<>(
                         201,
                         "Job Post created successfully" + " , " +  responseDTO.getPostId(),
@@ -73,7 +74,7 @@ public class JobPostController {
     @Authorize({RoleName.COMPANY_RECRUITER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<JobPostResponseDTO>> updateJobPost(
             @PathVariable Long postId,
-            @RequestBody JobPostRequestDTO jobPostRequestDTO
+            @Valid @RequestBody JobPostRequestDTO jobPostRequestDTO
     ){
         JobPost toDomainModel = jobPostWebMapper.toDomainModel(jobPostRequestDTO);
         JobPostWithCompanyAggregate toUseCase = jobPostUseCase.updateJobPost(postId, toDomainModel);
@@ -90,7 +91,7 @@ public class JobPostController {
     //delete job post
     @DeleteMapping("/{postId}")
     @Authorize(RoleName.ADMIN)
-    public ResponseEntity<String> deleteJobPost(
+    public ResponseEntity<Void> deleteJobPost(
             @PathVariable Long postId
     ){
         jobPostUseCase.deleteJobPost(postId);
@@ -98,7 +99,7 @@ public class JobPostController {
     }
 
     //job post matching
-    @GetMapping("/recommendations/{userId}")
+    @GetMapping("/{userId}/recommendations")
     @Authorize({RoleName.COMPANY_RECRUITER, RoleName.ADMIN})
     public ResponseEntity<StandardResponse<List<JobPostResponseDTO>>> getRecommendedJobPostsForUser(
             @PathVariable Long userId
