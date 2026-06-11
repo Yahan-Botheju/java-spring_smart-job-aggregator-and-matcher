@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.web.jobApplication.controllers;
 
+import jakarta.validation.Valid;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplication;
 import lk.job_finder_app.smart_job_aggregator.domain.models.JobApplicationAggregate;
 import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/job-application")
+@RequestMapping("/api/v1/job-applications")
 @RequiredArgsConstructor
 public class JobApplicationController {
 
@@ -30,7 +31,7 @@ public class JobApplicationController {
 
 
     //get all job applications
-    @GetMapping("/")
+    @GetMapping
     @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<JobApplicationResponseDTO>>> getAllJobApplications(){
         List<JobApplicationAggregate> jobApplications = jobApplicationUseCase.getAllJobApplications();
@@ -50,7 +51,7 @@ public class JobApplicationController {
     @PostMapping("/apply")
     @Authorize({RoleName.ADMIN, RoleName.USER})
     public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> applyForJob(
-            @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
+            @Valid  @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
     ){
         JobApplication toDomainModel = jobApplicationWebMapper.toDomainModel(jobApplicationRequestDTO);
         JobApplicationAggregate jobApplicationAggregate = jobApplicationUseCase.applyForJob(toDomainModel);
@@ -70,7 +71,7 @@ public class JobApplicationController {
     @Authorize({RoleName.ADMIN, RoleName.USER})
     public ResponseEntity<StandardResponse<JobApplicationResponseDTO>> updateJobApplication(
             @PathVariable Long jobApplicationId,
-            @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
+            @Valid @RequestBody JobApplicationRequestDTO jobApplicationRequestDTO
     ){
         JobApplication toDomainModel = jobApplicationWebMapper.toDomainModel(jobApplicationRequestDTO);
         JobApplicationAggregate jobApplicationAggregate = jobApplicationUseCase.updateJobApplication(jobApplicationId, toDomainModel);
