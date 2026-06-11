@@ -1,5 +1,6 @@
 package lk.job_finder_app.smart_job_aggregator.web.company.controllers;
 
+import jakarta.validation.Valid;
 import lk.job_finder_app.smart_job_aggregator.domain.models.Company;
 import lk.job_finder_app.smart_job_aggregator.domain.models.enums.RoleName;
 import lk.job_finder_app.smart_job_aggregator.globalResponseHandler.StandardResponse;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/company")
+@RequestMapping("/api/v1/companies")
 @RequiredArgsConstructor
 public class CompanyController {
 
@@ -28,7 +29,7 @@ public class CompanyController {
     private final CompanyWebMapper companyWebMapper;
 
     //get all companies
-    @GetMapping("/")
+    @GetMapping
     @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<List<CompanyResponseDTO>>> getAllCompanies(){
         List<Company> companies = companyUseCase.getAllCompanies();
@@ -45,10 +46,10 @@ public class CompanyController {
     }
 
     //create company
-    @PostMapping("/")
+    @PostMapping
     @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<CompanyResponseDTO>> createCompany(
-                               @RequestBody CompanyRequestDTO companyRequestDTO
+                              @Valid @RequestBody CompanyRequestDTO companyRequestDTO
     ){
         //turn dot to domain model
         Company company = companyWebMapper.toDomainModel(companyRequestDTO);
@@ -58,7 +59,7 @@ public class CompanyController {
 
         CompanyResponseDTO responseDTO = companyWebMapper.toResponseDTO(savedEntity);
 
-        return ResponseEntity.created(URI.create("/api/v1/jobsapplicator/company/" + responseDTO.getCompanyId()))
+        return ResponseEntity.created(URI.create("/api/v1/companies/" + responseDTO.getCompanyId()))
                 .body(new StandardResponse<>(
                         201,
                         "Company registered successfully",
@@ -72,7 +73,7 @@ public class CompanyController {
     @Authorize(RoleName.ADMIN)
     public ResponseEntity<StandardResponse<CompanyResponseDTO>> updateCompany(
             @PathVariable Long companyId,
-            @RequestBody CompanyRequestDTO companyRequestDTO
+            @Valid @RequestBody CompanyRequestDTO companyRequestDTO
     ){
         //create domain model
         Company toDomainModel = companyWebMapper.toDomainModel(companyRequestDTO);
@@ -92,7 +93,7 @@ public class CompanyController {
     //delete company
     @DeleteMapping("/{companyId}")
     @Authorize(RoleName.ADMIN)
-    public ResponseEntity<String> deleteCompany(
+    public ResponseEntity<Void> deleteCompany(
             @PathVariable Long companyId
     ){
         companyUseCase.deleteCompany(companyId);
